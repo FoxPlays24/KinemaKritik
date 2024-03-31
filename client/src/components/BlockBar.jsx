@@ -8,8 +8,8 @@ const BlockBar = () => {
   ];
 
   return (
-  <div className="bg-white shadow-xl ml-12 hidden lg:block">
-    <div className="text-2xl truncate text-center select-none mb-6">
+  <div className="bg-white shadow-xl ml-12 hidden lg:block h-screen overflow-y-scroll">
+    <div className="fixed bg-white text-2xl truncate text-center select-none pb-6 rounded-2xl z-10">
       <div className="flex flex-row gap-8 mx-8 my-4 justify-center">
         <div className="w-16 h-14 bg-[#DDDFE1] rounded shadow-inner" />
         <div className="w-16 h-14 bg-[#DDDFE1] rounded shadow-inner" />
@@ -17,7 +17,7 @@ const BlockBar = () => {
       </div>
       Новинки на сайте
     </div>
-    <div className="flex flex-col gap-4 items-center">
+    <div className="flex flex-col gap-4 items-center h-screen mt-36">
       {/* Components */}
       {items.map((item) => (
         <BlockBarComponent image={item.image} />
