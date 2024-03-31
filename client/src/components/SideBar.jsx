@@ -5,7 +5,7 @@ import { RiMessageFill } from "react-icons/ri";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { IoIosMore } from "react-icons/io";
 
-import profile from '../img/users/profile-picture-foxplays.png';
+import profile from '../img/users/1.png';
 import logo from '../img/logo.svg';
 
 import SideBarComponent from "./SideBarComponent.tsx";

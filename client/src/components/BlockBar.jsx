@@ -2,9 +2,9 @@ import BlockBarComponent from "./BlockBarComponent.tsx";
 
 const BlockBar = () => {
   const items = [
-    { image: require('../img/movies/Oppenheimer/Oppenheimer-block.png') },
-    { image: require('../img/movies/Black Mirror/Black Mirror-block.png') },
-    { image: require('../img/movies/Dune/Dune-block.png') },
+    { image: require('../img/movies/blocks/1.png') }, // Oppenheimer
+    { image: require('../img/movies/blocks/2.png') }, // Black Mirror
+    { image: require('../img/movies/blocks/3.png') }, // Dune
   ];
 
   return (
