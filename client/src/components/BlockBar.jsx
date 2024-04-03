@@ -1,11 +1,22 @@
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import BlockBarComponent from "./BlockBarComponent.tsx";
 
 const BlockBar = () => {
-  const items = [
-    { image: require('../img/movies/blocks/1.png') }, // Oppenheimer
-    { image: require('../img/movies/blocks/2.png') }, // Black Mirror
-    { image: require('../img/movies/blocks/3.png') }, // Dune
-  ];
+  const [films,setFilms] = useState([])
+  
+  useEffect(() => {
+    const fetchAllMovies = async () => {
+      try {
+        const res = await axios.get('http://localhost:80/films')
+        setFilms(res.data)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    fetchAllMovies()
+  }, [])
 
   return (
   <div className="bg-white shadow-xl ml-12 hidden lg:block h-screen overflow-y-scroll scrollbar-hide">
@@ -19,8 +30,8 @@ const BlockBar = () => {
     </div>
     <div className="flex flex-col gap-4 items-center h-screen mt-36">
       {/* Components */}
-      {items.map((item) => (
-        <BlockBarComponent image={item.image} />
+      {films.map(film => (
+        <BlockBarComponent id={film.id} title={film.title} />
       ))}
       <a href='.' className="pt-2 pb-10">
         <span className="text-2xl bg-[#DDDFE1] px-8 py-2 rounded-2xl align-top">...</span>
