@@ -1,0 +1,15 @@
+{
+  "name": "kinemakritik",
+  "version": "1.0.0",
+  "description": "Website for reviews and ratings of Movies & TV Series | Graduate thesis",
+  "main": "index.js",
+  "scripts": {
+    "build": "concurrently \"cd client && npm install\" \"cd server && npm install\"",
+    "start": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+  },
+  "author": "FoxPlays",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
