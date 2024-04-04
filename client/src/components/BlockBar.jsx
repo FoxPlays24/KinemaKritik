@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import BlockBarComponent from "./BlockBarComponent.tsx";
@@ -7,7 +7,7 @@ const BlockBar = () => {
   const [films,setFilms] = useState([])
   
   useEffect(() => {
-    const fetchAllMovies = async () => {
+    const fetchAllFilms = async () => {
       try {
         const res = await axios.get('http://localhost:80/films')
         setFilms(res.data)
@@ -15,7 +15,7 @@ const BlockBar = () => {
         console.error(err)
       }
     }
-    fetchAllMovies()
+    fetchAllFilms()
   }, [])
 
   return (
