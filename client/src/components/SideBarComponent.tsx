@@ -2,8 +2,8 @@ import React from 'react';
 import { IconType } from 'react-icons';
 
 interface SideBarComponentProps {
-    name: String;
-    href?: String;
+    name: string;
+    href?: string;
     icon: IconType;
 }
   
@@ -23,9 +23,12 @@ const SideBarComponent : React.FC<SideBarComponentProps> = ({ name, icon: Icon, 
     items-center
     text-lg
     font-roboto
+    hover:scale-105
     '>
         <Icon size={32} />
-        <p className='hidden lg:block pl-3'>{name}</p>
+        <a href={href}>
+          <p className='hidden lg:block pl-3'>{name}</p>
+        </a>
     </div>
   </div>
   );
