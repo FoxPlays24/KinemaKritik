@@ -51,7 +51,7 @@ const SideBar = () => {
 
       {/* Components */}
       {items.map((item) => (
-        <SideBarComponent name={item.name} icon={item.icon} href={item.href} />
+        <SideBarComponent key={item.name} name={item.name} icon={item.icon} href={item.href} />
       ))}
     </div>
     </div>

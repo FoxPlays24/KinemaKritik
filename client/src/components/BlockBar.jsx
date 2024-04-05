@@ -31,7 +31,7 @@ const BlockBar = () => {
     <div className="flex flex-col gap-4 items-center h-screen mt-36">
       {/* Components */}
       {films.map(film => (
-        <BlockBarComponent id={film.id} title={film.title} />
+        <BlockBarComponent key={film.id} id={film.id} title={film.title} />
       ))}
       <a href='.' className="pt-2 pb-10">
         <span className="text-2xl bg-[#DDDFE1] px-8 py-2 rounded-2xl align-top">...</span>
