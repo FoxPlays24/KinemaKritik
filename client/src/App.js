@@ -15,7 +15,7 @@ function App() {
         <div className='bg-white shadow-xl col-span-3 lg:col-span-2 p-4'>
           <BrowserRouter>
             <Routes>
-              {/* <Route path="/" element={<Main/>}/> */}
+              <Route path="/"/>
               <Route path="/film/:id" element={<Film/>}/>
             </Routes>
           </BrowserRouter>
