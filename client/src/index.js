@@ -5,11 +5,15 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 import { Toaster } from 'react-hot-toast'
+import RegisterModal from './components/modals/RegisterModal.tsx'
+import LoginModal from './components/modals/LoginModal.tsx'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Toaster />
+    <RegisterModal />
+    <LoginModal />
     <App />
   </React.StrictMode>
 );
