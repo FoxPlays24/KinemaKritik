@@ -4,23 +4,27 @@ import { MdMovie } from 'react-icons/md'
 import { RiMessageFill } from 'react-icons/ri'
 import { IoIosMore } from 'react-icons/io'
 
-import profile from '../img/users/1.png'
+import profile from '../img/misc/placeholder_profile.png'
 import logo from '../img/logo.svg'
 
 import SideBarComponent from './SideBarComponent.tsx'
 import { useRegisterModal } from '../hooks/useAuthModal.ts'
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
+import { AuthContext } from '../context/authContext.js'
 
 const SideBarLogo = 
   <div className='bg-white p-4 w-28 h-28 rounded shadow-xl mb-6 hidden lg:block'>
     <a href='/'>
       <img src={logo} alt='KinemaKritik' />
     </a>
-  </div>;
+  </div>
 
 const SideBar = () => {
   const registerModal = useRegisterModal()
-  const onClick = useCallback(() => {
+
+  const { currentUser } = useContext(AuthContext)
+
+  const onClick = useCallback(async () => {
     registerModal.onOpen()
   }, [registerModal])
 
@@ -30,7 +34,7 @@ const SideBar = () => {
     { name: 'Кинема', icon: MdMovie, href: '/films' },
     { name: 'Рецензии', icon: RiMessageFill, href: '/reviews' },
     { name: 'Еще', icon: IoIosMore, href: '.' }
-  ];
+  ]
 
   return (
   <div className='flex flex-col items-end mr-8 justify-center'>
@@ -39,9 +43,9 @@ const SideBar = () => {
 
     {/* Side Bar */}
     <div className='px-4 py-8 bg-white rounded shadow-xl'>
-
       {/* User */}
-      <button onClick={onClick} className='mb-4 flex items-center gap-4 select-none cursor-pointer p-1 rounded-2xl transition hover:bg-gray-200 hover:scale-105'>
+      {currentUser ?
+      <a href={`/user/${currentUser.login}`} className='mb-4 flex items-center gap-4 select-none cursor-pointer p-1 rounded-2xl transition hover:bg-gray-200 hover:scale-105'>
         {/* User Picture */}
         <div className='relative w-12'>
           <img className='rounded-full' src={profile} alt='Profile' />
@@ -49,11 +53,23 @@ const SideBar = () => {
         </div>
         {/* User Nickname & Status */}
         <div className='w-40 hidden text-left lg:block'>
-          <span className='text-xl font-bold truncate line-clamp-1'>FoxPlays 🦊</span>
+          <span className='text-xl font-bold truncate line-clamp-1'>{currentUser.username}</span>
           <span className='text-gray-400 line-clamp-2 leading-none text-sm'>Рецензии не для слабонервных</span>
         </div>
+      </a>
+      :
+      <button onClick={onClick} className='mb-4 flex items-center gap-4 select-none cursor-pointer p-1 rounded-2xl transition hover:bg-gray-200 hover:scale-105'>
+      {/* User Picture */}
+      <div className='relative w-12'>
+        <img className='rounded-full' src={profile} alt='Profile' />
+      </div>
+      {/* User Nickname & Status */}
+      <div className='w-40 hidden text-left lg:block'>
+        <span className='text-xl font-bold truncate line-clamp-1'>Гость</span>
+        <span className='text-gray-400 line-clamp-2 leading-none text-sm'>Вы в режиме Гостя</span>
+      </div>
       </button>
-
+      }
       {/* Components */}
       {items.map((item) => (
         <SideBarComponent key={item.name} name={item.name} icon={item.icon} href={item.href} />
@@ -65,4 +81,4 @@ const SideBar = () => {
   );
 }
 
-export default SideBar;
+export default SideBar

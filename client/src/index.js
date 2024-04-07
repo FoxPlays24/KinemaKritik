@@ -8,13 +8,17 @@ import { Toaster } from 'react-hot-toast'
 import RegisterModal from './components/modals/RegisterModal.tsx'
 import LoginModal from './components/modals/LoginModal.tsx'
 
+import { AuthContextProvider } from "./context/authContext";
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <Toaster />
-    <RegisterModal />
-    <LoginModal />
-    <App />
+    <AuthContextProvider>
+      <Toaster />
+      <RegisterModal />
+      <LoginModal />
+      <App />
+    </AuthContextProvider>
   </React.StrictMode>
 );
 

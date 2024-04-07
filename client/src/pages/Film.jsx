@@ -1,60 +1,33 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useLocation } from 'react-router-dom'
+import { getFilm, getGenres } from '../api/films.ts'
 
-import { FaPlay } from "react-icons/fa";
+import { FaPlay } from 'react-icons/fa'
+
+const getImage = (locate) => {
+  try {
+    const img = require('../img/'+locate)
+    return img
+  } catch (err) {
+    return null
+  }
+}
 
 const Film = () => {
   const filmId = parseInt(useLocation().pathname.split("/")[2])
 
-  const [film,setFilm] = useState([])
-  const [banner,setBanner] = useState([])
-  const [trailer,setTrailer] = useState([])
-  const [primaryColor, setPrimaryColor] = useState([])
-  const [genres,setGenres] = useState([])
+  const { data: film, isFilmLoading } = getFilm(filmId)
+  const { data: genres, isGenresLoading } = getGenres(filmId)
+
+  if ((isFilmLoading || !film) || (isGenresLoading || !genres)) {
+    return (
+      <>
+      Загрузка
+      </>
+    )
+  }
   
-  useEffect(() => {
-    const fetchFilm = async () => {
-      try {
-        const res = await axios.get(`http://localhost:80/films/${filmId}`)
-        setFilm(res.data[0])
-        setPrimaryColor(res.data[0].page_primary_color.length ? res.data[0].page_primary_color : '#000')
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchFilm()
-
-    const fetchBanner = async () => {
-      try {
-        const img = require(`../img/movies/banners/${filmId}.png`)
-        setBanner(img)
-      } catch (err) {
-        setBanner(null)
-      }
-    }
-    fetchBanner()
-
-    const fetchTrailer = async () => {
-      try {
-        const img = require(`../img/movies/trailer/${filmId}.png`)
-        setTrailer(img)
-      } catch (err) {
-        setTrailer(null)
-      }
-    }
-    fetchTrailer()
-
-    const fetchGenres = async () => {
-      try {
-        const res = await axios.get(`http://localhost:80/films/${filmId}/genres`)
-        setGenres(res.data)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchGenres()
-  }, [filmId])
+  const banner = getImage(`movies/banners/${filmId}.png`)
+  const trailer = getImage(`movies/trailer/${filmId}.png`)
 
   return (
     <>
@@ -65,15 +38,15 @@ const Film = () => {
       <div className='grid grid-rows-2 mt-8'>
         <div className='flex flex-row items-center'>
           <div className='flex gap-2 font-roboto items-center'>
-            <span className='text-2xl font-medium'>{film.title}</span>
-            <span className={`text-[${primaryColor}] text-sm`}>+240</span>
+            <span className='text-2xl font-medium'>{film[0].title}</span>
+            <span className={`text-sm`}>+240</span>
           </div>
-          <span className='text-sm font-roboto text-end ml-auto'>{film.age_limit} {film.original_title} {new Date(film.release_date).getFullYear()} Кристофер Нолан</span>
+          <span className='text-sm font-roboto text-end ml-auto'>{film[0].age_limit} {film[0].original_title} {new Date(film[0].release_date).getFullYear()} Кристофер Нолан</span>
         </div>
 
         <div className='flex flex-row items-center'>
           <div className='flex flex-row gap-4 select-none'>
-            <a href='.' className={`text-sm text-white bg-[${primaryColor}] rounded-2xl px-11 py-2 cursor-default`}>
+            <a href='.' className={`text-sm text-white bg-black rounded-2xl px-11 py-2 cursor-default`}>
               Инфо
             </a>
             <a href='.' className='text-sm bg-white rounded-2xl px-11 py-2 border-black border transition hover:bg-zinc-200'>
@@ -97,20 +70,20 @@ const Film = () => {
           {/* Dates */}
           <div>
             <span>Дата выхода</span>
-            <span className='font-medium absolute right-0'>{new Date(film.release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
+            <span className='font-medium absolute right-0'>{new Date(film[0].release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
           </div>
           {
-            film.release_date_streams &&
+            film[0].release_date_streams &&
             <div className='text-zinc-400'>
               <span>{'>'} стриминг-сервисы</span>
-              <span className='absolute right-0'>{new Date(film.release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
+              <span className='absolute right-0'>{new Date(film[0].release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
             </div>
           }
           {
-            film.release_date_russia &&
+            film[0].release_date_russia &&
             <div className='text-zinc-400'>
               <span>{'>'} в России</span>
-              <span className='absolute right-0'>{new Date(film.release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
+              <span className='absolute right-0'>{new Date(film[0].release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
             </div>
           }
           {/* Genres */}
@@ -133,7 +106,7 @@ const Film = () => {
           {/* Rating */}
           <div>
             <span>Рейтинг</span>
-            <span className='font-medium absolute right-0'>{film.age_limit}</span>
+            <span className='font-medium absolute right-0'>{film[0].age_limit}</span>
           </div>
         </div>
         {/* Trailer */}

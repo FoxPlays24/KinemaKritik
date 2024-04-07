@@ -1,22 +1,25 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-
 import BlockBarComponent from "./BlockBarComponent.tsx";
+import { getFilms } from '../api/films.ts'
+
+const BlockBarComponents = (films, isFilmsLoading) => {
+  if (isFilmsLoading || !films) {
+    return (
+      <>
+      Загрузка
+      </>
+    )
+  }
+  return (
+  <>
+    {films.map(film => (
+      <BlockBarComponent key={film.id} id={film.id} title={film.title} />
+    ))}
+  </>
+  )
+}
 
 const BlockBar = () => {
-  const [films,setFilms] = useState([])
-  
-  useEffect(() => {
-    const fetchAllFilms = async () => {
-      try {
-        const res = await axios.get('http://localhost:80/films')
-        setFilms(res.data)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchAllFilms()
-  }, [])
+  const { data: films, isFilmsLoading } = getFilms()
 
   return (
   <div className="bg-white shadow-xl ml-12 hidden lg:block h-screen overflow-y-scroll scrollbar-hide">
@@ -30,15 +33,13 @@ const BlockBar = () => {
     </div>
     <div className="flex flex-col gap-4 items-center h-screen mt-36">
       {/* Components */}
-      {films.map(film => (
-        <BlockBarComponent key={film.id} id={film.id} title={film.title} />
-      ))}
+      {BlockBarComponents(films, isFilmsLoading)}
       <a href='/films' className="pt-2 pb-10">
         <span className="text-2xl bg-[#DDDFE1] px-8 py-2 rounded-2xl align-top">...</span>
       </a>
     </div>
   </div>
-  );
+  )
 }
 
 export default BlockBar;

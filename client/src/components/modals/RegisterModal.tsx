@@ -3,15 +3,25 @@ import { useLoginModal, useRegisterModal } from '../../hooks/useAuthModal.ts'
 import Input from '../modalComponents/Input.tsx'
 import Modal from '../Modal.tsx'
 
+import toast from 'react-hot-toast'
+import axios from 'axios'
+
 const RegisterModal = () => {
   const loginModal = useLoginModal()
   const registerModal = useRegisterModal()
 
-  const [mail, setMail] = useState('')
-  const [nickname, setNickname] = useState('')
-  const [login, setLogin] = useState('')
-  const [password, setPassword] = useState('')
+  const [inputs,setInputs] = useState({
+    mail: '',
+    username: '',
+    login: '',
+    password: ''
+  })
   const [isLoading, setIsLoading] = useState(false)
+  const [err,setErr] = useState(null)
+
+  const handleInput = (e) => {
+    setInputs(prev => ({...prev, [e.target.name]: [e.target.value]}))
+  }
 
   const onToggle = useCallback(() => {
     if(isLoading) return
@@ -19,28 +29,40 @@ const RegisterModal = () => {
     loginModal.onOpen()
   }, [isLoading, registerModal, loginModal])
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true)
+      
+      await axios.post('http://localhost:80/register', inputs)
+      toast(`Пользователь '${inputs.username}' успешно зарегистрирован!`)
+
+      inputs.mail=''
+      inputs.username=''
+      inputs.login=''
+      inputs.password=''
+
+      setErr(null)
+
       registerModal.onClose()
     } catch (err) {
-        console.error(err)
+      setErr(err.response.data)
     } finally {
-        setIsLoading(false)
+      setIsLoading(false)
     }
-  }, [registerModal])
+  }, [inputs, registerModal])
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
-      <Input placeholder='Почта' onChange={(e) => setMail(e.target.value)} value={mail} disabled={isLoading} type={'email'} />
-      <Input placeholder='Псевдоним' onChange={(e) => setNickname(e.target.value)} value={nickname} disabled={isLoading} />
-      <Input placeholder='Логин' onChange={(e) => setLogin(e.target.value)} value={login} disabled={isLoading} />
-      <Input placeholder='Пароль' onChange={(e) => setPassword(e.target.value)} value={password} disabled={isLoading} type={'password'} />
+      <Input name='mail' placeholder='Почта' onChange={handleInput} value={inputs.mail} disabled={isLoading} type={'email'} />
+      <Input name='username' placeholder='Псевдоним' onChange={handleInput} value={inputs.username} disabled={isLoading} />
+      <Input name='login' placeholder='Логин' onChange={handleInput} value={inputs.login} disabled={isLoading} />
+      <Input name='password' placeholder='Пароль' onChange={handleInput} value={inputs.password} disabled={isLoading} type={'password'} />
     </div>
   )
 
   const footerContent = (
     <div className='text-zinc-400 text-center mt-2'>
+      <p className='text-red-600'>{err}</p>
       <p>Уже есть аккаунт? <span onClick={onToggle} className='cursor-pointer text-black hover:underline'>Войти</span></p>
     </div>
   )

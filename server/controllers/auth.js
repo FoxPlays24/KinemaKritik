@@ -3,10 +3,11 @@ import { hashPassword, comparePassword } from '../helpers/passwords.js'
 import jwt from 'jsonwebtoken'
 
 const register = async (req, res) => {
-    let mail = req.body.mail && req.body.mail.trim()
-    let username = req.body.username && req.body.username.trim()
-    let login = req.body.login && req.body.login.trim()
-    let password = req.body.password && req.body.password.trim()
+    console.log(req.body)
+    let mail = req.body.mail && req.body.mail[0].trim()
+    let username = req.body.username && req.body.username[0].trim()
+    let login = req.body.login && req.body.login[0].trim()
+    let password = req.body.password && req.body.password[0].trim()
 
     if (!(mail && username && login && password))
         return res.status(500).json('Пожалуйста, введите данные')
@@ -51,8 +52,8 @@ const loginUser = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    let login = req.body.login && req.body.login.trim()
-    let inputPassword = req.body.password && req.body.password.trim()
+    let login = req.body.login && req.body.login[0].trim()
+    let inputPassword = req.body.password && req.body.password[0].trim()
 
     if (!(login && inputPassword))
         return res.status(500).json('Пожалуйста, введите свой логин и пароль')
