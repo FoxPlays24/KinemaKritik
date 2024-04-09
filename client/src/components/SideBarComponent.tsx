@@ -34,4 +34,4 @@ const SideBarComponent : React.FC<SideBarComponentProps> = ({ name, icon: Icon, 
   );
 }
 
-export default SideBarComponent;
+export default SideBarComponent

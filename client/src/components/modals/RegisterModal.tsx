@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { useLoginModal, useRegisterModal } from '../../hooks/useAuthModal.ts'
 import Input from '../modalComponents/Input.tsx'
 import Modal from '../Modal.tsx'
 
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { AuthContext } from '../../context/authContext.js'
 
 const RegisterModal = () => {
   const loginModal = useLoginModal()
@@ -29,12 +30,17 @@ const RegisterModal = () => {
     loginModal.onOpen()
   }, [isLoading, registerModal, loginModal])
 
+  const { login } = useContext(AuthContext)
+
   const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true)
+
+      console.log(inputs)
       
       await axios.post('http://localhost:80/register', inputs)
-      toast(`Пользователь '${inputs.username}' успешно зарегистрирован!`)
+      await login(inputs)
+      toast.success(`Пользователь '${inputs.username}' успешно зарегистрирован!`)
 
       inputs.mail=''
       inputs.username=''
@@ -49,7 +55,7 @@ const RegisterModal = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [inputs, registerModal])
+  }, [inputs, login, registerModal])
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>

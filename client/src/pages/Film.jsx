@@ -1,7 +1,18 @@
 import { useLocation } from 'react-router-dom'
-import { getFilm, getGenres } from '../api/films.ts'
+import { getFilm, getFilmLiked, getFilmLikes, getGenres } from '../api/films.ts'
+import { getReviews } from '../api/reviews.ts'
 
 import { FaPlay } from 'react-icons/fa'
+import { BiSolidLike } from 'react-icons/bi'
+
+import Review from '../components/Review.tsx'
+import ReviewPostComponent from '../components/ReviewPostComponent.tsx'
+
+import { AuthContext } from '../context/authContext.js'
+import { useContext } from 'react'
+import { useRegisterModal } from '../hooks/useAuthModal.ts'
+
+import axios from 'axios'
 
 const getImage = (locate) => {
   try {
@@ -12,19 +23,81 @@ const getImage = (locate) => {
   }
 }
 
+const FilmLikes = (filmId) => {
+  const { currentUser } = useContext(AuthContext)
+  const { data: likes, mutate: mutateLikes } = getFilmLikes(filmId)
+  const { data: liked, mutate: mutateLiked } = getFilmLiked(filmId,currentUser ? currentUser.id : null)
+
+  const registerModal = useRegisterModal()
+
+  let isLoading = false
+
+  const like = async (selectedValue) => {
+    if(!currentUser)
+      return registerModal.onOpen()
+
+    let value = (liked === selectedValue) ? 0 : selectedValue
+    isLoading = true
+
+    await axios.post('http://localhost:80/films/like', {
+      "user_id": currentUser.id,
+      "film_id": filmId,
+      "liked": value
+    })
+    
+    mutateLikes(likes, value)
+    mutateLiked(liked, value)
+
+    isLoading = false
+  }
+
+  return (
+  <div className='flex justify-center gap-6'>
+    <button disabled={isLoading} onClick={() => like(1)}>
+      {liked===1 
+      ? <BiSolidLike className='size-6 transition hover:scale-90 text-red-600 hover:opacity-70 disabled:opacity-50'/>
+      : <BiSolidLike className='size-6 transition hover:scale-125 hover:opacity-70 disabled:opacity-50'/>
+      }
+    </button>
+    {
+      likes > 0
+      ? <span className='text-red-600 font-semibold text-xl select-none'>{'+'+likes}</span>
+      : <span className='text-purple-800 font-semibold text-xl select-none'>{likes}</span>
+    }
+    <button disabled={isLoading} onClick={() => like(-1)}>
+      {liked===-1 
+      ? <BiSolidLike className='size-6 transition -scale-100 hover:-scale-90 text-purple-800 hover:opacity-70 disabled:opacity-50'/>
+      : <BiSolidLike className='size-6 transition -scale-100 hover:-scale-125 hover:opacity-70 disabled:opacity-50'/>
+      }
+    </button>
+  </div>
+  )
+}
+
 const Film = () => {
   const filmId = parseInt(useLocation().pathname.split("/")[2])
 
   const { data: film, isFilmLoading } = getFilm(filmId)
   const { data: genres, isGenresLoading } = getGenres(filmId)
+  const { data: reviews, isReviewsLoading } = getReviews(filmId)
 
-  if ((isFilmLoading || !film) || (isGenresLoading || !genres)) {
+  const likes = FilmLikes(filmId)
+  const reviewPost = ReviewPostComponent(filmId)
+  
+  if ((isFilmLoading || !film) || (isGenresLoading || !genres) || (isReviewsLoading || !reviews)) {
     return (
-      <>
-      Загрузка
-      </>
+    <>
+    Загрузка
+    </>
     )
   }
+
+  if(!film.length)
+    return (
+    <>
+    404 Кино не найдено :(
+    </>
+    )
   
   const banner = getImage(`movies/banners/${filmId}.png`)
   const trailer = getImage(`movies/trailer/${filmId}.png`)
@@ -39,7 +112,6 @@ const Film = () => {
         <div className='flex flex-row items-center'>
           <div className='flex gap-2 font-roboto items-center'>
             <span className='text-2xl font-medium'>{film[0].title}</span>
-            <span className={`text-sm`}>+240</span>
           </div>
           <span className='text-sm font-roboto text-end ml-auto'>{film[0].age_limit} {film[0].original_title} {new Date(film[0].release_date).getFullYear()} Кристофер Нолан</span>
         </div>
@@ -118,6 +190,25 @@ const Film = () => {
             </div>
             <img src={trailer} alt='Trailer' className='rounded-2xl brightness-50 transition hover:brightness-75 w-[460px]' />
           </a>
+        }
+      </div>
+      <hr className="h-px my-8 bg-zinc-600 border-0"></hr>
+      <span className='flex justify-center font-semibold mb-4'>Оцените {film[0].film_type.toLowerCase()}!</span>
+      {likes}
+      <hr className="h-px my-8 bg-zinc-600 border-0"></hr>
+      
+      <div className='flex flex-col gap-8'>
+        <span className='flex justify-center font-semibold'>Рецензии</span>
+        {reviewPost}
+        {
+          reviews.length > 0 ?
+          <div className='flex flex-col gap-4 mb-16'>
+            {reviews.map(review => (
+                <Review review={review} />
+            ))}
+          </div>
+          :
+          <span className='flex justify-center select-none'>Рецензий пока нет... :(</span>
         }
       </div>
     </>

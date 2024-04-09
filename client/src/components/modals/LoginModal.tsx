@@ -32,9 +32,9 @@ const LoginModal = () => {
   const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true)
-
+      
       await login(inputs)
-      toast(`Вы успешно вошли!`)
+      toast.success(`Вы успешно вошли!`)
       
       inputs.login = ''
       inputs.password = ''

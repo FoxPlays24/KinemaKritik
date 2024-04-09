@@ -1,8 +1,8 @@
 import swr from 'swr'
-import { fetcherGet } from './fetcher.ts'
+import fetcher from './fetcher.ts'
 
-const getFilm = (filmId: number) => {
-  const { data, error, isLoading, mutate } = swr(`http://localhost:80/films/${filmId}`, fetcherGet)
+export const getFilm = (filmId: number) => {
+  const { data, error, isLoading, mutate } = swr(`http://localhost:80/films/${filmId}`, fetcher)
   return {
     data,
     error,
@@ -11,8 +11,8 @@ const getFilm = (filmId: number) => {
   }
 }
 
-const getGenres = (filmId: number) => {
-  const { data, error, isLoading, mutate } = swr(`http://localhost:80/films/${filmId}/genres`, fetcherGet)
+export const getGenres = (filmId: number) => {
+  const { data, error, isLoading, mutate } = swr(`http://localhost:80/films/${filmId}/genres`, fetcher)
   return {
     data,
     error,
@@ -21,8 +21,8 @@ const getGenres = (filmId: number) => {
   }
 }
 
-const getFilms = () => {
-  const { data, error, isLoading, mutate } = swr('http://localhost:80/films/', fetcherGet)
+export const getFilms = () => {
+  const { data, error, isLoading, mutate } = swr('http://localhost:80/films/', fetcher)
   return {
     data,
     error,
@@ -31,5 +31,12 @@ const getFilms = () => {
   }
 }
 
+export const getFilmLikes = (filmId: number) => {
+  const { data, mutate } = swr(`http://localhost:80/films/${filmId}/likes`, fetcher)
+  return { data, mutate }
+}
 
-export { getFilm, getGenres, getFilms }
+export const getFilmLiked = (filmId: number, userId: number) => {
+  const { data, mutate } = swr(`http://localhost:80/films/${filmId}/liked/${userId}`, fetcher)
+  return { data, mutate }
+}

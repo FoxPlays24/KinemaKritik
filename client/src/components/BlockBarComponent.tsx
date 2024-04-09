@@ -13,4 +13,4 @@ const BlockBarComponent : React.FC<BlockBarComponentProps> = ({ id, title }) => 
   );
 }
 
-export default BlockBarComponent;
+export default BlockBarComponent

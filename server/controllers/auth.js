@@ -3,7 +3,6 @@ import { hashPassword, comparePassword } from '../helpers/passwords.js'
 import jwt from 'jsonwebtoken'
 
 const register = async (req, res) => {
-    console.log(req.body)
     let mail = req.body.mail && req.body.mail[0].trim()
     let username = req.body.username && req.body.username[0].trim()
     let login = req.body.login && req.body.login[0].trim()
@@ -11,7 +10,7 @@ const register = async (req, res) => {
 
     if (!(mail && username && login && password))
         return res.status(500).json('Пожалуйста, введите данные')
-    
+
     if (password.length < 6)
         return res.status(500).json('Минимальная длина пароля 6 символов')
 
@@ -27,14 +26,18 @@ const register = async (req, res) => {
             if (data.length > 0)
                 return res.status(500).json('Аккаунт с таким логином уже существует')
             
-            db.query('INSERT INTO users(mail,username,login,password) VALUES (?)', [[
+            db.query('INSERT INTO users(mail,login,password) VALUES (?)', [[
                 mail,
-                username,
                 login,
                 hashedPassword
             ]], (err,data) => {
                 if (err) return res.status(500).json(err)
-                res.send(`Пользователь '${username}' успешно зарегистрирован!`)
+
+                db.query('INSERT INTO profiles(user_id,username) VALUES ((SELECT id FROM users ORDER BY id DESC LIMIT 1), ?)', [username], 
+                (err,data) => { 
+                    if (err) return res.status(500).json(err)
+                    res.send(`Пользователь '${username}' успешно зарегистрирован!`) 
+                })
             })
         })
     })
