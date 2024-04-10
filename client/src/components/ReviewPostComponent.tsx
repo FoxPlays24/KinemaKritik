@@ -8,20 +8,19 @@ import { getUserReview } from '../api/reviews.ts'
 
 const ReviewPostComponent = (filmId) => {
   const { currentUser } = useContext(AuthContext)
-  const { data: liked } = getFilmLiked(filmId,currentUser ? currentUser.id : null)
-  
+  const { data: liked } = getFilmLiked(filmId,currentUser?.id)
+
+  const { data: review, isLoading: isReviewLoading } = getUserReview(filmId,currentUser?.id)
+  let isReview = !(isReviewLoading || !review)
+
   const [inputs,setInputs] = useState({
     title: '',
     content: '',
   })
 
-  const { data: review, isLoading: isReviewLoading } = getUserReview(filmId,currentUser ? currentUser.id : null)
-  let isReview = !(isReviewLoading || !review)
-
   if(isReview && (!(inputs.title.length && inputs.content.length))) {
     setInputs({title: review.title, content: review.content})
   }
-
 
   const remove = useCallback(async () => {
     if(!isReview) return

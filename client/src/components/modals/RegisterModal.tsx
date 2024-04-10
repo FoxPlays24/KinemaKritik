@@ -74,7 +74,7 @@ const RegisterModal = () => {
   )
   
   return (
-    <Modal disabled={isLoading} isOpen={registerModal.isOpen} title='Регистрация' actionLabel='Зарегистироваться' onClose={registerModal.onClose} onSubmit={onSubmit} body={bodyContent} footer={footerContent} />
+  <Modal disabled={isLoading} isOpen={registerModal.isOpen} title='Регистрация' actionLabel='Зарегистироваться' onClose={registerModal.onClose} onSubmit={onSubmit} body={bodyContent} footer={footerContent} />
   )
 }
 

@@ -64,7 +64,7 @@ const LoginModal = () => {
   )
   
   return (
-    <Modal disabled={isLoading} isOpen={loginModal.isOpen} title='Вход' actionLabel='Войти' onClose={loginModal.onClose} onSubmit={onSubmit} body={bodyContent} footer={footerContent} />
+  <Modal disabled={isLoading} isOpen={loginModal.isOpen} title='Вход' actionLabel='Войти' onClose={loginModal.onClose} onSubmit={onSubmit} body={bodyContent} footer={footerContent} />
   )
 }
 

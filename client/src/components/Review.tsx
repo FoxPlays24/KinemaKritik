@@ -10,6 +10,7 @@ import { getReviewLikes, getReviewLiked } from '../api/reviews.ts'
 import axios from 'axios'
 import { AuthContext } from '../context/authContext.js'
 import { useRegisterModal } from '../hooks/useAuthModal.ts'
+import { bufferToBase64 } from './ImageUpload.tsx'
 
 const formatDate = (date) => {
     let year   = new Intl.DateTimeFormat('en', { year: '2-digit' }).format(date)
@@ -24,7 +25,7 @@ const formatDate = (date) => {
 const ReviewLikes = (reviewId) => {
   const { currentUser } = useContext(AuthContext)
   const { data: likes, mutate: mutateLikes } = getReviewLikes(reviewId)
-  const { data: liked, mutate: mutateLiked } = getReviewLiked(reviewId,currentUser ? currentUser.id : null)
+  const { data: liked, mutate: mutateLiked } = getReviewLiked(reviewId,currentUser?.id)
 
   const registerModal = useRegisterModal()
 
@@ -81,7 +82,7 @@ const Review : React.FC<ReviewProps> = ({ review }) => {
   <div className='flex flex-col bg-zinc-200 rounded p-3 shadow-md border border-zinc-300'>
     <div>
       <a href={`/user/${review.login}`} className='flex items-center gap-2 mb-2'>
-        <img className='rounded-full size-6' src={profile} alt='Profile' />
+        <img className='rounded-full size-6 object-contain' src={bufferToBase64(review?.profile_image,profile)} alt='Profile' />
         <span className='text-xl font-bold truncate line-clamp-1'>{review.username}</span>
         <span className='text-sm text-zinc-400'>{formatDate(new Date(review.created_at))}</span>
       </a>

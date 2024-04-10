@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals'
 import { Toaster } from 'react-hot-toast'
 import RegisterModal from './components/modals/RegisterModal.tsx'
 import LoginModal from './components/modals/LoginModal.tsx'
+import EditModal from './components/modals/EditModal.tsx'
 
 import { AuthContextProvider } from "./context/authContext";
 
@@ -15,8 +16,11 @@ root.render(
   <React.StrictMode>
     <AuthContextProvider>
       <Toaster />
+      
+      <EditModal />
       <RegisterModal />
       <LoginModal />
+
       <App />
     </AuthContextProvider>
   </React.StrictMode>

@@ -42,10 +42,10 @@ export const getReviewLiked = (req, res) => {
 export const review = (req, res) => {
     let user_id = req.body.user_id
     let film_id = req.body.film_id
-    let title = req.body.title
-    let content = req.body.content
+    let title = req.body.title && req.body.title
+    let content = req.body.content && req.body.content
 
-    if(!(title.trim && content.trim))
+    if(!(title && content))
         return res.status(500).json('Пожалуйста, введите данные')
 
     db.query('SELECT id FROM reviews WHERE user_id=? AND film_id=?', [user_id,film_id], (err,data) => {
