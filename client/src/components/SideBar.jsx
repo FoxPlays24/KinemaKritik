@@ -1,8 +1,8 @@
-import { IoIosNotifications } from 'react-icons/io'
-import { TiHome } from 'react-icons/ti'
-import { MdMovie } from 'react-icons/md'
+// import { IoIosNotifications } from 'react-icons/io'
+// import { TiHome } from 'react-icons/ti'
+// import { MdMovie } from 'react-icons/md'
 import { RiMessageFill } from 'react-icons/ri'
-import { IoIosMore } from 'react-icons/io'
+// import { IoIosMore } from 'react-icons/io'
 
 import profile from '../img/misc/placeholder_profile.png'
 import logo from '../img/logo.svg'
@@ -33,11 +33,11 @@ const SideBar = () => {
   }, [registerModal])
 
   const items = [
-    { name: 'Уведомления', icon: IoIosNotifications, href: '.' },
-    { name: 'Главная', icon: TiHome, href: '/' },
-    { name: 'Кинема', icon: MdMovie, href: '/films' },
-    { name: 'Рецензии', icon: RiMessageFill, href: '/reviews' },
-    { name: 'Еще', icon: IoIosMore, href: '.' }
+    // { name: 'Уведомления', icon: IoIosNotifications, href: '/notifications' },
+    // { name: 'Главная', icon: TiHome, href: '/' },
+    // { name: 'Кинема', icon: MdMovie, href: '/films' },
+    { name: 'Рецензии', icon: RiMessageFill, href: '/' },
+    // { name: 'Еще', icon: IoIosMore, href: '.' }
   ]
 
   return (

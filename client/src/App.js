@@ -4,8 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SideBar from './components/SideBar'
 import BlockBar from './components/BlockBar'
 
-import Film from './pages/Film';
-import User from './pages/User';
+import Film from './pages/Film'
+import User from './pages/User'
+// import Main from './pages/Main'
+import Reviews from './pages/Reviews'
+import Notifications from './pages/Notifications'
 
 function App() {
   return (
@@ -16,9 +19,11 @@ function App() {
         <div className='bg-white shadow-xl col-span-3 lg:col-span-2 p-4 overflow-y-scroll scrollbar-hide'>
           <BrowserRouter>
             <Routes>
-              <Route path="/"/>
-              <Route path="/film/:id" element={<Film/>}/>
-              <Route path="/user/:id" element={<User/>}/>
+              {/* <Route path='/' element={<Main/>}/> */}
+              <Route path='/' element={<Reviews/>}/>
+              <Route path='/film/:id' element={<Film/>}/>
+              <Route path='/user/:id' element={<User/>}/>
+              <Route path='/notifications' element={<Notifications/>}/>
             </Routes>
           </BrowserRouter>
         </div>

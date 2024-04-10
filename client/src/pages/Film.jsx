@@ -14,6 +14,8 @@ import { useRegisterModal } from '../hooks/useAuthModal.ts'
 
 import axios from 'axios'
 
+import Header from '../components/Header.tsx'
+
 const getImage = (locate) => {
   try {
     const img = require('../img/'+locate)
@@ -92,7 +94,7 @@ const Film = () => {
     )
   }
 
-  if(!film.length)
+  if(!film)
     return (
     <>
     404 Кино не найдено :(
@@ -103,7 +105,8 @@ const Film = () => {
   const trailer = getImage(`movies/trailer/${filmId}.png`)
 
   return (
-    <>
+    <div className='flex flex-col'>
+      <Header showBackArrow={true} label={`${film.title} (${new Date(film.release_date).getFullYear()})` } />
       {
         banner ? <img src={banner} alt='Banner' className='rounded-md' loading='eager' /> 
         : <div className='bg-repeat h-52 rounded-md' style={{backgroundImage: `url(${require('../img/misc/placeholder.png')})`}} />
@@ -111,9 +114,9 @@ const Film = () => {
       <div className='grid grid-rows-2 mt-8'>
         <div className='flex flex-row items-center'>
           <div className='flex gap-2 font-roboto items-center'>
-            <span className='text-2xl font-medium'>{film[0].title}</span>
+            <span className='text-2xl font-medium'>{film.title}</span>
           </div>
-          <span className='text-sm font-roboto text-end ml-auto'>{film[0].age_limit} {film[0].original_title} {new Date(film[0].release_date).getFullYear()} Кристофер Нолан</span>
+          <span className='text-sm font-roboto text-end ml-auto'>{film.age_limit} {film.original_title} {new Date(film.release_date).getFullYear()}</span>
         </div>
 
         <div className='flex flex-row items-center'>
@@ -142,20 +145,20 @@ const Film = () => {
           {/* Dates */}
           <div>
             <span>Дата выхода</span>
-            <span className='font-medium absolute right-0'>{new Date(film[0].release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
+            <span className='font-medium absolute right-0'>{new Date(film.release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
           </div>
           {
-            film[0].release_date_streams &&
+            film.release_date_streams &&
             <div className='text-zinc-400'>
               <span>{'>'} стриминг-сервисы</span>
-              <span className='absolute right-0'>{new Date(film[0].release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
+              <span className='absolute right-0'>{new Date(film.release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
             </div>
           }
           {
-            film[0].release_date_russia &&
+            film.release_date_russia &&
             <div className='text-zinc-400'>
               <span>{'>'} в России</span>
-              <span className='absolute right-0'>{new Date(film[0].release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
+              <span className='absolute right-0'>{new Date(film.release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })}</span>
             </div>
           }
           {/* Genres */}
@@ -173,18 +176,21 @@ const Film = () => {
           {/* Country */}
           <div>
             <span>Страна</span>
-            <span className='font-medium absolute right-0'>США / Великобритания</span>
+            <span className='font-medium absolute right-0'>{film.country}</span>
           </div>
           {/* Rating */}
           <div>
             <span>Рейтинг</span>
-            <span className='font-medium absolute right-0'>{film[0].age_limit}</span>
+            <span className='font-medium absolute right-0'>{film.age_limit}</span>
           </div>
         </div>
         {/* Trailer */}
         {
           trailer &&
-          <a href='https://youtu.be/bK6ldnjE3Y0' className='relative'>
+          <a href=
+          {film.id===0 ? 'https://youtu.be/bK6ldnjE3Y0' :
+           film.id===1 ? '' :
+           'https://youtu.be/n9xhJrPXop4'} className='relative'>
             <div className='absolute z-10 translate-x-1/2 translate-y-14'>
               <span className='flex items-center gap-2 text-white font-semibold text-2xl'>{<FaPlay />} Трейлер</span>
             </div>
@@ -193,7 +199,7 @@ const Film = () => {
         }
       </div>
       <hr className="h-px my-8 bg-zinc-600 border-0"></hr>
-      <span className='flex justify-center font-semibold mb-4'>Оцените {film[0].film_type.toLowerCase()}!</span>
+      <span className='flex justify-center font-semibold mb-4'>Оцените {film.film_type.toLowerCase()}!</span>
       {likes}
       <hr className="h-px my-8 bg-zinc-600 border-0"></hr>
       
@@ -211,7 +217,7 @@ const Film = () => {
           <span className='flex justify-center select-none'>Рецензий пока нет... :(</span>
         }
       </div>
-    </>
+    </div>
   )
 }
 

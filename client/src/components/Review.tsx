@@ -86,14 +86,18 @@ const Review : React.FC<ReviewProps> = ({ review }) => {
         <span className='text-xl font-bold truncate line-clamp-1'>{review.username}</span>
         <span className='text-sm text-zinc-400'>{formatDate(new Date(review.created_at))}</span>
       </a>
-      <h3 className='flex items-center gap-2 font-semibold text-xl mb-2'>
-        {
-        review.liked === 1
-        ? <FaHeart className='text-red-600'/>
-        : <FaHeartBroken className='text-purple-800'/>
-        }
-        {review.title}
-      </h3>
+      <div className='flex items-center'>
+        <h3 className='flex items-center gap-2 font-semibold text-xl mb-2'>
+          {
+          review.liked === 1
+          ? <FaHeart className='text-red-600'/>
+          : <FaHeartBroken className='text-purple-800'/>
+          }
+          {review.title}
+        </h3>
+        {review.film_id &&
+        <a className='ml-auto px-4 py-2 bg-zinc-400 text-white font-medium rounded-full' href={`/film/${review.film_id}`}>{review.film_title}</a>}
+      </div>
       <div className='whitespace-pre-line leading-relaxed text-sm'>{review.content}</div>
     </div>
     {ReviewLikes(review.id)}

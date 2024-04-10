@@ -73,3 +73,29 @@ export const reviewRemove = (req, res) => {
         res.send(`Рецензия успешно удалена`) 
     })
 }
+
+export const getAllReviews = (req, res) => {
+    db.query(`SELECT reviews.id, users.login, profiles.username, profile_image, reviews.title title, content, liked, reviews.created_at, film_ratings.film_id, films.title film_title FROM reviews 
+    JOIN users ON users.id=reviews.user_id 
+    JOIN profiles ON profiles.user_id=reviews.user_id
+    JOIN film_ratings ON film_ratings.user_id=reviews.user_id AND film_ratings.film_id=reviews.film_id
+    JOIN films ON films.id=film_ratings.film_id ORDER BY reviews.id DESC`, 
+    (err,data) => {
+        if(err) return res.json(err)
+        res.json(data)
+    })
+}
+
+export const getUserReviews = (req, res) => {
+    let id = req.params.user_login
+
+    db.query(`SELECT reviews.id, users.login, profiles.username, profile_image, reviews.title title, content, liked, reviews.created_at, film_ratings.film_id, films.title film_title FROM users 
+    JOIN reviews ON reviews.user_id=users.id
+    JOIN profiles ON profiles.user_id=reviews.user_id
+    JOIN film_ratings ON film_ratings.user_id=reviews.user_id AND film_ratings.film_id=reviews.film_id
+    JOIN films ON films.id=film_ratings.film_id WHERE users.login=? ORDER BY reviews.id DESC`, 
+    [id], (err,data) => {
+        if(err) return res.json(err)
+        res.json(data)
+    })
+}

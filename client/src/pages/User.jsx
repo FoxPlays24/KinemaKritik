@@ -1,13 +1,19 @@
 import { useLocation } from 'react-router-dom'
 import { getUser } from '../api/users.ts'
 
-import { FaArrowLeft } from 'react-icons/fa'
 import profile from '../img/misc/placeholder_profile.png'
 import cover from '../img/misc/placeholder.png'
 import { useContext } from 'react'
 import { AuthContext } from '../context/authContext.js'
 import { useEditModal } from '../hooks/useEditModal.ts'
 import { bufferToBase64 } from '../components/ImageUpload.tsx'
+
+import { IoMdExit } from 'react-icons/io'
+import axios from 'axios'
+
+import Header from '../components/Header.tsx'
+import { getUserReviews } from '../api/reviews.ts'
+import Review from '../components/Review.tsx'
 
 const declOfNum = (n, titles) => {  
   return titles[n%10===1 && n%100!==11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2]
@@ -16,10 +22,29 @@ const declOfNum = (n, titles) => {
 const User = () => {
   const userLogin = useLocation().pathname.split("/")[2]
   
+  
   const { data: user } = getUser(userLogin)
   const { currentUser } = useContext(AuthContext)
 
   const editModal = useEditModal()
+
+  const { data: reviews, isReviewsLoading } = getUserReviews(userLogin)
+
+  if (isReviewsLoading || !reviews) {
+    return (
+    <>
+    Загрузка
+    </>
+    )
+  }
+
+  const logOut = async () => {
+    await axios.post("http://localhost:80/logout", null, {
+      withCredentials: true
+    })
+    localStorage.clear()
+    window.location.reload()
+  }
 
   if(!user)
   return (
@@ -30,14 +55,8 @@ const User = () => {
 
   return (
     <>
-    <div className='flex-col'>
-      <div className='flex items-center gap-6 bg-white w-full mb-4'>
-        <a href='/'><FaArrowLeft className='size-6'/></a>
-        <div className='flex-col'>
-          <h2 className='text-xl font-semibold'>{user?.username}</h2>
-          <span className='text-sm'>{user?.reviews > 0 && (user?.reviews + ' ' + declOfNum(user?.reviews, ['рецензия', 'рецензии', 'рецензий']))}</span>
-        </div>
-      </div>
+    <div className='flex flex-col gap-6'>
+      <Header showBackArrow={true} label={user?.username} label2={user?.reviews > 0 && (user?.reviews + ' ' + declOfNum(user?.reviews, ['рецензия', 'рецензии', 'рецензий']))} />
       <div>
         {user?.cover_image ?
           <div className='bg-cover h-52 rounded-md' style={{backgroundImage: `url(${bufferToBase64(user?.cover_image)}`}} />
@@ -49,18 +68,31 @@ const User = () => {
           <div className='flex flex-col'>
             <div className='flex flex-row items-center gap-2'>
             <h2 className='text-2xl font-medium'>{user?.username}</h2>
-            <span className='text-gray-600'>({userLogin})</span>
+            <span className='text-zinc-400'>({userLogin})</span>
             </div>
             
-            <span className='text-gray-600'>{user?.status}</span>
+            <span className='text-zinc-600'>{user?.status}</span>
           </div>
           {
             currentUser?.login === userLogin
             &&
-            <button onClick={() => editModal.onOpen()} className='bg-zinc-300 px-4 py-2 rounded-full font-semibold transition hover:scale-105 ml-auto'>Редактировать</button>
+            <div className='flex gap-4 ml-auto'>
+              <button onClick={() => editModal.onOpen()} className='bg-zinc-300 px-4 py-2 rounded-full font-semibold transition hover:scale-105'>Редактировать</button>
+              <button onClick={logOut} className='bg-zinc-300 px-4 py-2 rounded-full font-semibold transition hover:scale-105'><IoMdExit/></button>
+            </div>
           }
         </div>
       </div>
+      {
+      reviews.length > 0 ?
+      <div className='flex flex-col gap-4 mb-16'>
+        {reviews.map(review => (
+            <Review review={review} />
+        ))}
+      </div>
+      :
+      <span className='flex justify-center select-none'>Рецензий пока нет... :(</span>
+    }
     </div>
     </>
   )

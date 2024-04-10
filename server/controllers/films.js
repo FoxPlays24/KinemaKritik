@@ -1,8 +1,7 @@
 import { db } from '../db.js'
 
 export const getFilms = (req, res) => {
-    db.query(`SELECT films.id, title, original_title, description, film_types.name film_type, age_limits.name age_limit, release_date, release_date_streams, release_date_russia
-              FROM films JOIN film_types ON film_types.id=film_type JOIN age_limits ON age_limits.id=age_limit GROUP BY films.id`, (err,data) => {
+    db.query(`SELECT films.id, title FROM films JOIN film_types ON film_types.id=film_type ORDER BY films.id DESC`, (err,data) => {
         if(err) return res.json(err)
         res.json(data)
     })
@@ -10,10 +9,10 @@ export const getFilms = (req, res) => {
 
 export const getFilm = (req, res) => {
     let id = req.params.film_id
-    db.query(`SELECT films.id, title, original_title, description, film_types.name film_type, age_limits.name age_limit, release_date, release_date_streams, release_date_russia
+    db.query(`SELECT films.id, title, original_title, description, country, film_types.name film_type, age_limits.name age_limit, release_date, release_date_streams, release_date_russia
               FROM films JOIN film_types ON film_types.id=film_type JOIN age_limits ON age_limits.id=age_limit WHERE films.id=?`, id, (err,data) => {
         if(err) return res.json(err)
-        res.json(data)
+        res.json(data[0])
     })
 }
 
@@ -27,7 +26,7 @@ export const getGenres = (req, res) => {
 
 export const getReviews = (req, res) => {
     let id = req.params.film_id
-    db.query(`SELECT reviews.id, users.login, profiles.username, profile_image, title, content, liked, reviews.created_at FROM reviews 
+    db.query(`SELECT reviews.id, users.login, profiles.username, profile_image, reviews.title title, content, liked, reviews.created_at FROM reviews 
     JOIN users ON users.id=reviews.user_id 
     JOIN profiles ON profiles.user_id=reviews.user_id
     JOIN film_ratings ON film_ratings.user_id=reviews.user_id AND film_ratings.film_id=reviews.film_id
