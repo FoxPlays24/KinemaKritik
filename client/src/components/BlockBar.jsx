@@ -34,7 +34,7 @@ const BlockBar = () => {
     <div className="flex flex-col gap-4 items-center h-screen mt-36">
       {/* Components */}
       {BlockBarComponents(films, isFilmsLoading)}
-      <a href='/films' className="pt-2 pb-10">
+      <a href='/' className="pt-2 pb-10">
         <span className="text-2xl bg-[#DDDFE1] px-8 py-2 rounded-2xl align-top">...</span>
       </a>
     </div>
