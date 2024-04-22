@@ -38,7 +38,7 @@ const RegisterModal = () => {
 
       console.log(inputs)
       
-      await axios.post('http://localhost:80/register', inputs)
+      await axios.post('http://localhost:3001/register', inputs)
       await login(inputs)
       toast.success(`Пользователь '${inputs.username}' успешно зарегистрирован!`)
 

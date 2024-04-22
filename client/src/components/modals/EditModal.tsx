@@ -32,7 +32,7 @@ const EditModal = () => {
     try {
       setIsLoading(true)
 
-      await axios.patch('http://localhost:80/users/edit', {
+      await axios.patch('http://localhost:3001/users/edit', {
         user_id: currentUserId,
         profile_image: profileImage,
         cover_image: coverImage,

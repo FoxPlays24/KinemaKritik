@@ -1,8 +1,10 @@
-import mysql from 'mysql'
+import mysql from 'mysql2'
 
-export const db = mysql.createConnection({
+const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '0000oooo',
     database: 'kinemakritik'
-})
+}).promise()
+
+export default db

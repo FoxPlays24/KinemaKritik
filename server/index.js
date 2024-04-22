@@ -23,7 +23,7 @@ app.use(authRoutes)
 app.use('/users', usersRoutes)
 app.use('/review', reviewRoutes)
 
-const port = 80
-app.listen(80, () => { 
+const port = 3001
+app.listen(port, () => { 
     console.log(`Server is listening to http://localhost:${port}/`)
 })

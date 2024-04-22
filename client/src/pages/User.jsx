@@ -39,7 +39,7 @@ const User = () => {
   }
 
   const logOut = async () => {
-    await axios.post("http://localhost:80/logout", null, {
+    await axios.post("http://localhost:3001/logout", null, {
       withCredentials: true
     })
     localStorage.clear()

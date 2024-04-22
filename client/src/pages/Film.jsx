@@ -41,7 +41,7 @@ const FilmLikes = (filmId) => {
     let value = (liked === selectedValue) ? 0 : selectedValue
     isLoading = true
 
-    await axios.post('http://localhost:80/films/like', {
+    await axios.post('http://localhost:3001/films/like', {
       "user_id": currentUser.id,
       "film_id": filmId,
       "liked": value
