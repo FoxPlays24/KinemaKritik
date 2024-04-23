@@ -38,7 +38,7 @@ const ReviewLikes = (reviewId) => {
     let value = (liked === selectedValue) ? 0 : selectedValue
     isLoading = true
 
-    await axios.post('http://localhost:3001/review/like', {
+    await axios.post(`${process.env.REACT_APP_API_URL}/review/like`, {
       "user_id": currentUser.id,
       "review_id": reviewId,
       "liked": value

@@ -25,7 +25,7 @@ const ReviewPostComponent = (filmId) => {
   const remove = useCallback(async () => {
     if(!isReview) return
     try {
-      await axios.post('http://localhost:3001/review/remove/', { "review_id": review.id })
+      await axios.post(`${process.env.REACT_APP_API_URL}/review/remove/`, { "review_id": review.id })
       window.location.reload()
       toast.success('Рецензия успешно удалена!')
     } catch (err) {
@@ -36,7 +36,7 @@ const ReviewPostComponent = (filmId) => {
   const publish = useCallback(async () => {
     if(!currentUser) return
     try {
-      await axios.post('http://localhost:3001/review', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/review`, {
         "user_id": currentUser.id,
         "film_id": filmId,
         "title": inputs.title,
