@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 
+import 'dotenv/config'
+
 import filmsRoutes from './routes/films.js'
 import authRoutes from './routes/auth.js'
 import usersRoutes from './routes/users.js'
@@ -14,7 +16,7 @@ app.use(express.urlencoded({limit: '10mb', extended: true}))
 app.use(express.json())
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.SITE_URL
 }))
 app.use(cookieParser())
 
@@ -23,7 +25,7 @@ app.use(authRoutes)
 app.use('/users', usersRoutes)
 app.use('/review', reviewRoutes)
 
-const port = 3001
+const port = 3000
 app.listen(port, () => { 
-    console.log(`Server is listening to http://localhost:${port}/`)
+    console.log(`Server is listening to port ${port}`)
 })
