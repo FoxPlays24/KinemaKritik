@@ -2,7 +2,7 @@ import swr from 'swr'
 import fetcher from './fetcher.ts'
 
 export const getReviews = (filmId?: number) => {
-  const { data, error, isLoading, mutate } = swr(filmId ? `http://localhost:3001/films/${filmId}/reviews` : 'http://localhost:3001/review', fetcher)
+  const { data, error, isLoading, mutate } = swr(filmId ? `${process.env.REACT_APP_API_URL}/films/${filmId}/reviews` : `${process.env.REACT_APP_API_URL}/review`, fetcher)
   return {
     data,
     error,
@@ -12,7 +12,7 @@ export const getReviews = (filmId?: number) => {
 }
 
 export const getUserReview = (filmId: number, userId: number) => {
-  const { data, error, isLoading, mutate } = swr(`http://localhost:3001/films/${filmId}/review/${userId}`, fetcher)
+  const { data, error, isLoading, mutate } = swr(`${process.env.REACT_APP_API_URL}/films/${filmId}/review/${userId}`, fetcher)
   return {
     data,
     error,
@@ -22,7 +22,7 @@ export const getUserReview = (filmId: number, userId: number) => {
 }
 
 export const getUserReviews = (userLogin: string) => {
-  const { data, error, isLoading, mutate } = swr(`http://localhost:3001/review/${userLogin}`, fetcher)
+  const { data, error, isLoading, mutate } = swr(`${process.env.REACT_APP_API_URL}/review/${userLogin}`, fetcher)
   return {
     data,
     error,
@@ -32,11 +32,11 @@ export const getUserReviews = (userLogin: string) => {
 }
 
 export const getReviewLikes = (reviewId: number) => {
-  const { data, mutate } = swr(`http://localhost:3001/review/${reviewId}/likes`, fetcher)
+  const { data, mutate } = swr(`${process.env.REACT_APP_API_URL}/review/${reviewId}/likes`, fetcher)
   return { data, mutate }
 }
 
 export const getReviewLiked = (reviewId: number, userId: number) => {
-  const { data, mutate } = swr(`http://localhost:3001/review/${reviewId}/liked/${userId}`, fetcher)
+  const { data, mutate } = swr(`${process.env.REACT_APP_API_URL}/review/${reviewId}/liked/${userId}`, fetcher)
   return { data, mutate }
 }

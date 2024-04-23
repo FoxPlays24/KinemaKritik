@@ -2,7 +2,7 @@ import swr from 'swr'
 import fetcher from './fetcher.ts'
 
 export const getFilm = (filmId: number) => {
-  const { data, error, isLoading, mutate } = swr(`http://localhost:3001/films/${filmId}`, fetcher)
+  const { data, error, isLoading, mutate } = swr(`${process.env.REACT_APP_API_URL}/films/${filmId}`, fetcher)
   return {
     data,
     error,
@@ -12,7 +12,7 @@ export const getFilm = (filmId: number) => {
 }
 
 export const getGenres = (filmId: number) => {
-  const { data, error, isLoading, mutate } = swr(`http://localhost:3001/films/${filmId}/genres`, fetcher)
+  const { data, error, isLoading, mutate } = swr(`${process.env.REACT_APP_API_URL}/films/${filmId}/genres`, fetcher)
   return {
     data,
     error,
@@ -22,7 +22,7 @@ export const getGenres = (filmId: number) => {
 }
 
 export const getFilms = () => {
-  const { data, error, isLoading, mutate } = swr('http://localhost:3001/films/', fetcher)
+  const { data, error, isLoading, mutate } = swr(`${process.env.REACT_APP_API_URL}/films/`, fetcher)
   return {
     data,
     error,
@@ -32,11 +32,11 @@ export const getFilms = () => {
 }
 
 export const getFilmLikes = (filmId: number) => {
-  const { data, mutate } = swr(`http://localhost:3001/films/${filmId}/likes`, fetcher)
+  const { data, mutate } = swr(`${process.env.REACT_APP_API_URL}/films/${filmId}/likes`, fetcher)
   return { data, mutate }
 }
 
 export const getFilmLiked = (filmId: number, userId: number) => {
-  const { data, mutate } = swr(`http://localhost:3001/films/${filmId}/liked/${userId}`, fetcher)
+  const { data, mutate } = swr(`${process.env.REACT_APP_API_URL}/films/${filmId}/liked/${userId}`, fetcher)
   return { data, mutate }
 }
