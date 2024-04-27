@@ -3,34 +3,27 @@ import { IconType } from 'react-icons';
 
 interface SideBarComponentProps {
     name: string;
-    href?: string;
     icon: IconType;
+    href?: string;
 }
   
 const SideBarComponent : React.FC<SideBarComponentProps> = ({ name, icon: Icon, href }) => {
   return (
-  <div className='flex flex-row items-center justify-center lg:justify-start'>
-    <div className='
-    text-zinc-400
-    rounded-full 
-    p-1
-    cursor-pointer
-    transition
-    hover:text-zinc-800
-    hover:font-bold
-    hover:bg-gray-200
-    lg:flex
-    items-center
-    text-lg
-    font-roboto
-    hover:scale-105
-    '>
-        <Icon size={32} />
-        <a href={href}>
-          <p className='hidden lg:block pl-3'>{name}</p>
-        </a>
-    </div>
-  </div>
+  <a className='
+  flex flex-row 
+  items-center 
+  select-none 
+  gap-2 
+  px-3
+  lg:px-4 
+  py-1 
+  rounded-full 
+  bg-gray-300 
+  transition 
+  hover:bg-gray-400 hover:text-white 
+  active:bg-gray-400 active:text-white' href={href}>
+    <Icon size={32} className='w-6' /><p className='hidden lg:block'>{name}</p>
+  </a>
   );
 }
 

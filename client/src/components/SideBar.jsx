@@ -1,8 +1,5 @@
-// import { IoIosNotifications } from 'react-icons/io'
-// import { TiHome } from 'react-icons/ti'
-// import { MdMovie } from 'react-icons/md'
 import { RiMessageFill } from 'react-icons/ri'
-// import { IoIosMore } from 'react-icons/io'
+import { IoIosMore } from 'react-icons/io'
 
 import profile from '../img/misc/placeholder_profile.png'
 import logo from '../img/logo.svg'
@@ -15,12 +12,9 @@ import { AuthContext } from '../context/authContext.js'
 import { getUser } from '../api/users.ts'
 import { bufferToBase64 } from './ImageUpload.tsx'
 
-const SideBarLogo = 
-  <div className='bg-white p-4 w-28 h-28 rounded shadow-xl mb-6 hidden lg:block'>
-    <a href='/'>
-      <img src={logo} alt='KinemaKritik' />
-    </a>
-  </div>
+import { LuArrowRightToLine } from "react-icons/lu";
+
+
 
 const SideBar = () => {
   const registerModal = useRegisterModal()
@@ -33,56 +27,86 @@ const SideBar = () => {
   }, [registerModal])
 
   const items = [
-    // { name: 'Уведомления', icon: IoIosNotifications, href: '/notifications' },
-    // { name: 'Главная', icon: TiHome, href: '/' },
-    // { name: 'Кинема', icon: MdMovie, href: '/films' },
-    { name: 'Рецензии', icon: RiMessageFill, href: '/' },
-    // { name: 'Еще', icon: IoIosMore, href: '.' }
+    { name: 'Лента', icon: RiMessageFill, href: '/' },
+    { name: 'О сайте', icon: IoIosMore, href: '.' }
   ]
 
   return (
-  <div className='flex flex-col items-end mr-8 justify-center'>
-    <div className='flex flex-col items-center'>
-    {SideBarLogo}
+  <>
+  <header className='hidden lg:flex items-center justify-end ml-4 mr-8 select-none'>
+    <div className='flex flex-col w-64 gap-2 px-4 py-8 bg-white border border-gray-300 rounded-2xl shadow-xl'>
 
-    {/* Side Bar */}
-    <div className='px-4 py-8 bg-white rounded shadow-xl'>
-      {/* User */}
-      {currentUser ? 
-        <a href={`/user/${currentUser.login}`} className='mb-4 flex items-center gap-4 select-none cursor-pointer p-1 rounded-2xl transition hover:bg-gray-200 hover:scale-105'>
-          {/* User Picture */}
-          <div className='relative w-12'>
-            <img className='size-12 object-contain rounded-full' src={bufferToBase64(user?.profile_image,profile)} alt='Profile' />
-            {/* <span className='-bottom-1 -right-1 absolute bg-gray-300 rounded-full text-xs text-gray-600'>+210</span> */}
-          </div>
-          {/* User Nickname & Status */}
-          <div className='w-40 hidden text-left lg:block'>
-            {
-              <>
-                <span className='text-xl font-bold truncate line-clamp-1'>{user?.username}</span>
-                <span className='text-gray-400 line-clamp-2 leading-none text-sm'>{user?.status}</span>
-              </>
-            }
-          </div>
+      <div className='flex flex-row justify-center'>
+        <a href='/'>
+          <img src={logo} alt='KinemaKritik' className='size-20' />
         </a>
-      :
-      <button onClick={onClick} className='mb-4 flex items-center gap-4 select-none cursor-pointer p-1 rounded-2xl transition hover:bg-gray-200 hover:scale-105'>
-      {/* User Picture */}
-      <img className='relative w-12 rounded-full' src={profile} alt='Profile' />
-      {/* User Nickname & Status */}
-      <div className='w-40 hidden text-left lg:block'>
-        <span className='text-xl font-bold truncate line-clamp-1'>Гость</span>
-        <span className='text-gray-400 line-clamp-2 leading-none text-sm'>Вы в режиме гостя</span>
       </div>
-      </button>
-      }
+
+      {/* User */}
+      <div className='flex flex-row items-center gap-2 w-full'>
+        {
+          user ?
+          <>
+            <img className='w-14 rounded-2xl' src={bufferToBase64(user.profile_image,profile)} alt='Profile' />
+            <div className='text-left truncate'>
+              <span className='text-xl font-bold truncate line-clamp-1'>{user.username}</span>
+              <span className='text-gray-400 line-clamp-2 leading-none text-sm'>{user.status}</span>
+            </div>
+            <a href={`/user/${currentUser.login}`} className='ml-auto bg-gray-300 rounded-full p-2 transition hover:scale-110 hover:brightness-90'>
+              <LuArrowRightToLine />
+            </a>
+          </>
+          :
+          <>
+          <img className='relative w-14 rounded-2xl' src={profile} alt='Profile' />
+          <div className='text-left'>
+            <span className='text-xl font-bold truncate line-clamp-1'>Гость</span>
+            <span className='text-gray-400 line-clamp-2 leading-none text-sm'>Вы в режиме гостя</span>
+          </div>
+          <button onClick={onClick} className='ml-auto bg-gray-300 rounded-full p-2 transition hover:scale-110 hover:brightness-90'>
+            <LuArrowRightToLine />
+          </button>
+          </>
+        }
+        
+      </div>
+
+      <hr/>
+
+      <input className="bg-gray-300 rounded-2xl p-2" placeholder="Поиск..." />
+
       {/* Components */}
       {items.map((item) => (
         <SideBarComponent key={item.name} name={item.name} icon={item.icon} href={item.href} />
       ))}
+
     </div>
+  </header>
+
+  {/* Mobile */}
+  <header className='absolute lg:hidden bottom-0 flex justify-center w-screen z-10 p-2 select-none'>
+    <div className='flex flex-row justify-center gap-2 p-2 bg-white border border-gray-300 rounded-2xl shadow-xl w-screen'>
+      
+      <img src={logo} alt='KinemaKritik' className='size-12' />
+      
+      {
+        user ?
+        <a href={`/user/${currentUser.login}`} className='transition active:scale-110 active:brightness-75'>
+          <img className='w-12 rounded-2xl' src={bufferToBase64(user.profile_image,profile)} alt='Profile' />
+        </a>
+        : 
+        <button onClick={onClick} className='transition active:scale-110 active:brightness-75'>
+          <img className='w-12 rounded-2xl' src={profile} alt='Profile' />
+        </button>
+      }
+      
+      {items.map((item) => (
+        <SideBarComponent key={item.name} name={item.name} icon={item.icon} href={item.href} />
+      ))}
+    
     </div>
-  </div>
+  </header>
+  </>
   )
 }
 

@@ -70,7 +70,7 @@ const ReviewPostComponent = (filmId) => {
         }
         <input name='title' onChange={handleInput} className='w-full rounded-md p-1 bg-transparent' value={inputs.title} placeholder='Заголовок' />
       </h3>
-      <textarea name='content' onChange={handleInput} value={inputs.content} className='leading-relaxed text-sm bg-transparent' placeholder='Контент' />
+      <textarea name='content' onChange={handleInput} value={inputs.content} className='resize-y leading-relaxed text-sm bg-transparent' placeholder='Контент' />
       <div className='flex justify-end gap-4'>
       {
         isReview &&

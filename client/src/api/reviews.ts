@@ -1,6 +1,11 @@
 import swr from 'swr'
 import fetcher from './fetcher.ts'
 
+export const getReview = (reviewId: number) => {
+  const { data, error } = swr(`${process.env.REACT_APP_API_URL}/review/${reviewId}`, fetcher)
+  return { data, error }
+}
+
 export const getReviews = (filmId?: number) => {
   const { data, error, isLoading, mutate } = swr(filmId ? `${process.env.REACT_APP_API_URL}/films/${filmId}/reviews` : `${process.env.REACT_APP_API_URL}/review`, fetcher)
   return {

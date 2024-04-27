@@ -14,8 +14,9 @@ const Reviews = () => {
   }
 
   return (
-  <div className='flex flex-col gap-6'>
-    <Header label='Рецензии' label2='Все рецензии на кино' />
+  <>
+  <Header label='Рецензии' label2='Все рецензии на кино' />
+  <div className='flex flex-col gap-6 px-4'>
     <h2 className='text-center'>Здесь показаны все рецензии на <b className='font-semibold text-red-600'>КинемаКритик!</b></h2>
     {
       reviews.length > 0 ?
@@ -28,6 +29,7 @@ const Reviews = () => {
       <span className='flex justify-center select-none'>Рецензий пока нет... :(</span>
     }
   </div>
+  </>
   )
 }
 

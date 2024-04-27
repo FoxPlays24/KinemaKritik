@@ -1,42 +1,16 @@
 import BlockBarComponent from "./BlockBarComponent.tsx";
 import { getFilms } from '../api/films.ts'
 
-const BlockBarComponents = (films, isFilmsLoading) => {
-  if (isFilmsLoading || !films) {
-    return (
-      <>
-      Загрузка
-      </>
-    )
-  }
-  return (
-  <>
-    {films.map(film => (
-      <BlockBarComponent key={film.id} id={film.id} title={film.title} />
-    ))}
-  </>
-  )
-}
-
 const BlockBar = () => {
-  const { data: films, isFilmsLoading } = getFilms()
+  const { data: films } = getFilms()
 
   return (
-  <div className="bg-white shadow-xl ml-12 hidden lg:block h-screen overflow-y-scroll scrollbar-hide">
-    <div className="fixed bg-white text-2xl truncate text-center select-none pb-6 rounded-b-2xl z-10">
-      <div className="flex flex-row gap-8 mx-8 my-4 justify-center">
-        <div className="w-16 h-14 bg-[#DDDFE1] rounded shadow-inner" />
-        <div className="w-16 h-14 bg-[#DDDFE1] rounded shadow-inner" />
-        <div className="w-16 h-14 bg-[#DDDFE1] rounded shadow-inner" />
-      </div>
-      Новинки на сайте
-    </div>
-    <div className="flex flex-col gap-4 items-center h-screen mt-36">
-      {/* Components */}
-      {BlockBarComponents(films, isFilmsLoading)}
-      <a href='/' className="pt-2 pb-10">
-        <span className="text-2xl bg-[#DDDFE1] px-8 py-2 rounded-2xl align-top">...</span>
-      </a>
+  <div className="hidden lg:flex items-center justify-start ml-8 mr-4 overflow-y-scroll scrollbar-hide">
+    <div className='flex flex-col w-80 gap-2 px-4 h-screen bg-white border border-gray-300 shadow-xl'>
+      <p className="sticky top-0 flex flex-row justify-center items-center p-4 backdrop-blur-sm bg-white/70 gap-6 z-10 text-xl font-semibold">Последнее кино</p>
+      {films?.map(film => (
+        <BlockBarComponent key={film.id} id={film.id} title={film.title} />
+      ))}
     </div>
   </div>
   )

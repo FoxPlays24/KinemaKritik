@@ -79,15 +79,17 @@ interface ReviewProps { review }
 
 const Review : React.FC<ReviewProps> = ({ review }) => {
   return (
-  <div className='flex flex-col bg-zinc-200 rounded p-3 shadow-md border border-zinc-300'>
-    <div>
-      <a href={`/user/${review.login}`} className='flex items-center gap-2 mb-2'>
-        <img className='rounded-full size-6 object-contain' src={bufferToBase64(review?.profile_image,profile)} alt='Profile' />
-        <span className='text-xl font-bold truncate line-clamp-1'>{review.username}</span>
-        <span className='text-sm text-zinc-400'>{formatDate(new Date(review.created_at))}</span>
-      </a>
+  <div className='flex flex-col rounded-2xl bg-gray-200 p-3 shadow-md border border-gray-300 transition hover:bg-gray-300 select-none'>
+    
+    <a href={`/user/${review.login}`} className='flex items-center gap-2'>
+      <img className='rounded-full size-6 object-contain' src={bufferToBase64(review?.profile_image,profile)} alt='Profile' />
+      <span className='text-xl font-bold truncate line-clamp-1'>{review.username}</span>
+      <span className='text-sm text-zinc-400 text-end ml-auto'>{formatDate(new Date(review.created_at))}</span>
+    </a>
+
+    <a href={`/review/${review.id}`}>
       <div className='flex items-center'>
-        <h3 className='flex items-center gap-2 font-semibold text-xl mb-2'>
+        <h3 className='flex items-center gap-2 font-semibold text-xl my-2'>
           {
           review.liked === 1
           ? <FaHeart className='text-red-600'/>
@@ -96,10 +98,11 @@ const Review : React.FC<ReviewProps> = ({ review }) => {
           {review.title}
         </h3>
         {review.film_id &&
-        <a className='ml-auto px-4 py-2 bg-zinc-400 text-white font-medium rounded-full' href={`/film/${review.film_id}`}>{review.film_title}</a>}
+        <a className='ml-auto px-4 py-2 bg-gray-400 text-white font-medium rounded-full' href={`/film/${review.film_id}`}>{review.film_title}</a>}
       </div>
-      <div className='whitespace-pre-line leading-relaxed text-sm'>{review.content}</div>
-    </div>
+      <span className='mt-4 line-clamp-6 whitespace-pre-line leading-relaxed text-sm'>{review.content}</span>
+    </a>
+    
     {ReviewLikes(review.id)}
   </div>
   )

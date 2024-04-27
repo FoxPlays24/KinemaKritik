@@ -6,29 +6,25 @@ import BlockBar from './components/BlockBar'
 
 import Film from './pages/Film'
 import User from './pages/User'
-// import Main from './pages/Main'
 import Reviews from './pages/Reviews'
-import Notifications from './pages/Notifications'
+import Review from './pages/Review'
 
 function App() {
   return (
-  <div className='bg-[#DDDFE1] h-screen'>
-    <div className='container h-full mx-auto'>
-      <div className='grid grid-cols-4 h-full'>
-        <SideBar />
-        <div className='bg-white shadow-xl col-span-3 lg:col-span-2 p-4 overflow-y-scroll scrollbar-hide'>
-          <BrowserRouter>
-            <Routes>
-              {/* <Route path='/' element={<Main/>}/> */}
-              <Route path='/' element={<Reviews/>}/>
-              <Route path='/film/:id' element={<Film/>}/>
-              <Route path='/user/:id' element={<User/>}/>
-              <Route path='/notifications' element={<Notifications/>}/>
-            </Routes>
-          </BrowserRouter>
-        </div>
-        <BlockBar />
-      </div>
+  <div className='bg-gray-200 h-screen'>
+    <div className='grid grid-cols-1 lg:grid-cols-4 h-full'>
+      <SideBar />
+      <main className='grid-col-2 col-span-2 mx-1 lg:mx-0 bg-white shadow-xl overflow-y-scroll scrollbar-hide'>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Reviews/>}/>
+            <Route path='/film/:id' element={<Film/>}/>
+            <Route path='/user/:id' element={<User/>}/>
+            <Route path='/review/:id' element={<Review/>}/>
+          </Routes>
+        </BrowserRouter>
+      </main>
+      <BlockBar />
     </div>
   </div>
   );
