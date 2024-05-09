@@ -1,19 +1,21 @@
-import db from '../db.js'
+import { db } from '../db.js'
 import { hashPassword, comparePassword } from '../helpers/passwords.js'
-import jwt from 'jsonwebtoken'
 
-const register = async (req, res) => {
-    let mail     = req.body.mail     && req.body.mail[0].trim(),
-        username = req.body.username && req.body.username[0].trim(),
-        login    = req.body.login    && req.body.login[0].trim(),
-        password = req.body.password && req.body.password[0].trim()
+export async function register(req, res) {
+    const mail     = req.body.mail     && req.body.mail    .trim(),
+          login    = req.body.login    && req.body.login   .trim(),
+          password = req.body.password && req.body.password.trim()
 
-    if (!(mail && username && login && password))
+    if (!(mail && login && password))
         return res.status(500).json('Пожалуйста, введите данные')
 
     if (password.length < 6)
         return res.status(500).json('Минимальная длина пароля 6 символов')
 
+    const passwordRegex = /(?=.*[!@#$%^&*()+:;.,])/;
+    if (passwordRegex.test(password))
+        return res.status(500).json('Пароль не должен содержать специальные символы (!"№;%:?*()+:;.,)')
+ 
     const hashedPassword = await hashPassword(password)
 
     db.query(`SELECT id FROM users WHERE mail=?`, [mail])
@@ -28,8 +30,8 @@ const register = async (req, res) => {
 
             db.query(`INSERT INTO users(mail,login,password) VALUES (?)`, [[mail,login,hashedPassword]])
             .then(
-                db.query(`INSERT INTO profiles(user_id,username) VALUES ((SELECT id FROM users ORDER BY id DESC LIMIT 1), ?)`, [username])
-                .then(res.send(`Пользователь '${username}' успешно зарегистрирован!`) )
+                db.query(`INSERT INTO profiles(user_id,username) VALUES ((SELECT id FROM users ORDER BY id DESC LIMIT 1), ?)`, [login])
+                .then(res.status(200).send("Успешно зарегистрирован"))
                 .catch(err => res.status(500).json(err))
             )
             .catch(err => res.status(500).json(err))
@@ -39,40 +41,30 @@ const register = async (req, res) => {
     .catch(err => res.status(500).json(err))
 }
 
-const loginUser = async (req, res) => {
-    const match = await comparePassword(req.inputPassword, req.password)
-    if(!match)
-        return res.status(500).json('Неверный пароль')
+async function comparePasswords(req, res) {
+  const match = await comparePassword(req.inputPassword, req.password)
+  
+  if(!match)
+      return res.status(500).json('Неверный пароль')
 
-    const token = jwt.sign({ id: req.others.id }, 'secret')
-    res.cookie('accessToken', token, {
-        httpOnly: true
-    }).status(200).json(req.others)
+  res.status(200).json(req.others)
 }
 
-const login = async (req, res) => {
-    let login         = req.body.login    && req.body.login[0].trim(),
-        inputPassword = req.body.password && req.body.password[0].trim()
+export async function login(req, res) {
+    const loginMail     = req.body.loginMail && req.body.loginMail.trim(),
+          inputPassword = req.body.password  && req.body.password .trim()
 
-    if (!(login && inputPassword))
-        return res.status(500).json('Пожалуйста, введите свой логин и пароль')
+    if (!(loginMail && inputPassword))
+        return res.status(500).json('Пожалуйста, введите свой логин/почту и пароль')
 
-    db.query(`SELECT * FROM users WHERE login=?`, [login])
+    db.query(`SELECT login, password FROM users WHERE login=? OR mail=?`, [loginMail,loginMail])
     .then(([result]) => {
         if (result.length == 0)
-            return res.status(404).json('Аккаунта с таким логином не существует')
+            return res.status(404).json('Аккаунта с таким логином/почтой не существует')
 
         const { password, ...others } = result[0]
-        loginUser({inputPassword, password, others}, res)
+        
+        comparePasswords({inputPassword, password, others}, res)
     })
     .catch(err => res.status(500).json(err))
 }
-
-const logout = async (req, res) => {
-    res.clearCookie('accessToken', {
-        secure: true,
-        sameSite: 'none'
-    }).status(200).json('Вы успешно вышли из аккаунта')
-}
-
-export { register, login, logout }

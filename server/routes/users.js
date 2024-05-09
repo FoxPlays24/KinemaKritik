@@ -1,8 +1,8 @@
 import express from 'express'
-import { editUser, getUser } from '../controllers/users.js'
+import { getUser } from '../controllers/users.js'
 
 const router = express.Router()
-router.get('/:user_login', getUser)
-router.patch('/edit', editUser)
+
+router.get('/user', getUser)
 
 export default router
