@@ -13,7 +13,7 @@ export function ImageModal() {
 
   return (
     <>
-      <MediaModal isOpen={image !== null} handleClose={() => router.replace("?")}>
+      <MediaModal isOpen={image !== null} handleClose={() => router.replace("?", { scroll: false })}>
         <Image src={`/films/shots/${link}/${image}`} width={0} height={0} alt="Image" className="w-full h-auto rounded-2xl scale-up-center" unoptimized priority />
       </MediaModal>
     </>

@@ -3,11 +3,12 @@
 import { useLoginModal } from "@/hooks/useModal"
 import { vote } from "@/utils/actions"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export interface VotesFooterProps {
-  votes:    number
   content?: any
+  votes:    number
   voted:    number
 }
 
@@ -18,19 +19,30 @@ export function VotesFooter({votes, content, voted}: VotesFooterProps) {
   const loginModal = useLoginModal()
   const [isLoading, setIsLoading] = useState(false)
 
+  useEffect(() => {
+    setCurVotes(votes)
+  }, [votes])
+  
+  useEffect(() => {
+    setUserVote(voted)
+  }, [voted])
+
   async function fetchClick(value: number) {
-    const newValue = (userVote === value) ? 0 : value
+    const isCanceled = (value === userVote)
+    const newValue = isCanceled ? 0 : value
+    
     try {
       setIsLoading(true)
 
       await vote(content, newValue)
-      
-      const votesWoUser = votes-voted // votes without user's vote
-      setCurVotes(userVote === value ? votesWoUser : +votesWoUser + +value)
+
+      setCurVotes(isCanceled ? +curVotes-userVote : +curVotes-userVote + value)
       setUserVote(newValue)
     } catch (err: any) {
-      if (err.message == "401")
+      if (err.message == "401") {
+        toast.error("Чтобы оставить оценку, вы должны войти в профиль")
         return loginModal.onOpen()
+      }
 
       setCurVotes(votes)
       setUserVote(voted)
@@ -50,7 +62,7 @@ export function VotesFooter({votes, content, voted}: VotesFooterProps) {
 
         <div className="font-semibold text">
           <p className={userVote ? userVote>0 ? "text-blue-700" : userVote<0 ? "text-rose-700" : "" : ""}>
-            { (curVotes>0 ? "+" : "") + curVotes }
+            { curVotes ? (curVotes>0 ? "+" : "") + curVotes : 0 }
           </p>
         </div>
 

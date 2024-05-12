@@ -7,6 +7,8 @@ import path from "path"
 import fs from "fs"
 import { GalleryImage } from "@/components/GalleryImage"
 import { Reviews } from "@/components/film/Reviews"
+import { Vote } from "@/components/film/Vote"
+import { getSession } from "@/utils/actions"
 
 function Gallery({film, link} : {film: any, link : string}) {
   const dir = path.join(process.cwd(), "/public/films/shots/", link)
@@ -108,9 +110,14 @@ async function FilmHeader({ film, link }: any) {
 
 export default async function FilmPage({ params }: any) {
   const link : string = params.link
-  const film = await fetch(`${process.env.API_URL}/films?link=${link}`, { cache: 'no-store' }).then(res => res.json())
+  const film = await fetch(`${process.env.API_URL}/films?link=${link}`).then(res => res.json())
   
   if (!film[0]) notFound()
+
+  const session = await getSession()
+  const voted = session.userLogin
+              ? await fetch(`${process.env.API_URL}/film/voted?id=${film[0].id}&user_login=${session.userLogin}`).then(res => res.json()) 
+              : undefined
 
   const genres = await fetch(`${process.env.API_URL}/film/genres?id=${film[0].id}`).then(res => res.json())
   
@@ -121,7 +128,8 @@ export default async function FilmPage({ params }: any) {
         <FilmHeader film={film[0]} link={link} />
         <FilmInfo film={film[0]} genres={genres} link={link} />
         <Gallery film={film[0]} link={link} />
-        <Reviews filmLink={link} />
+        <Vote voted={voted} filmId={film[0].id} />
+        <Reviews isVoted={voted} filmLink={link} />
       </div>
     </>
   )

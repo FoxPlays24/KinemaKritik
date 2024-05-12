@@ -21,8 +21,8 @@ const Logo = () =>
 
 export async function SideBar() {
   const buttons = [
-    { name: 'Лента', icon: <Home /> },
-    { name: 'О сайте', icon: <Info /> }
+    { name: 'Лента', icon: <Home />, href: "/" },
+    { name: 'О сайте', icon: <Info />, href: "/about" }
   ]
 
   const session = await getSession()
@@ -48,7 +48,7 @@ export async function SideBar() {
         <div>
         { 
           buttons.map(button => (
-            <button className="button justify-start w-full" key={button.name}>{button.icon} {button.name}</button>
+            <Link href={button.href} className="button justify-start w-full" key={button.name}>{button.icon} {button.name}</Link>
           ))
         }
         </div>

@@ -1,10 +1,11 @@
 import { Header } from "@/components/Header"
 import { Scale } from "lucide-react"
 import Image from "next/image"
+import { Suspense } from "react"
 
 export default function Terms() {
   return (
-    <>
+    <Suspense>
       <Header hasBackButton title="Пользовательское соглашение" icon={<Scale />}/>
       <Image src="/logo.svg" width={128} height={128} className="mx-auto" alt="Logo" priority={true} />
       <div className="p-4 text-justify mt-6 mb-24 text-sm">
@@ -60,6 +61,6 @@ export default function Terms() {
 <br/>
 <p className="text-right">Соглашение разработано на базе юридических документов сервиса <a href="https://praville.ru/" className="link">Правилль</a></p>
       </div>
-    </>
+    </Suspense>
   )
 }

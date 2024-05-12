@@ -3,13 +3,13 @@ import Image from "next/image"
 const Block = ({film}: any) => {
   return (
     <a href={`/film/${film.link}`} className="flex justify-center items-center justtify-center group">
-      <Image src={`/films/blocks/${film.link}.png`} alt={film.title} title={`${film.title} (${new Date(film.release_date).getFullYear()})`} width={300} height={300} priority className="w-72 h-auto my-2 rounded-2xl transition group-hover:brightness-75" />
+      <Image placeholder="blur" blurDataURL="/placeholders/profile.png" src={`/films/blocks/${film.link}.png`} alt={film.title} title={`${film.title} (${new Date(film.release_date).getFullYear()})`} width={300} height={300} priority className="w-72 h-auto my-2 rounded-2xl transition group-hover:brightness-75" />
     </a>
   )
 }
 
 export async function BlockBar() {
-  const films = await fetch(`${process.env.API_URL}/films`, { next: { revalidate: 200 } }).then(res => res.json())
+  const films = await fetch(`${process.env.API_URL}/films`).then(res => res.json())
 
   return (
     <div className="hidden lg:flex justify-start mr-8 h-screen">

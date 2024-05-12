@@ -19,21 +19,21 @@ export function Modal({isOpen, title, buttonName, children, handleClose, previou
   return (
     <div className="fixed inset-0 bg-slate-900/30 flex justify-center items-center z-50">
       <div className="w-[40rem]">
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 flex flex-col gap-2">
+        <div className="bg-white rounded-2xl p-6 flex flex-col gap-2">
           <div className="inline-flex mb-4">
             {
               previousModal
               ? <button><ArrowLeft /></button>
-              : <Image src="/tinylogo.svg" width={48} height={48} className="transition group-hover:scale-95" alt="Logo" priority={true} />
+              : <Image src="/tinylogo.svg" width={48} height={0} className="w-12 h-auto transition group-hover:scale-95" alt="Logo" priority={true} />
             }
             <h2 className="ml-auto text-2xl font-semibold">{title}</h2>
             <div className="ml-auto bg-slate-200 rounded-2xl"><button className="button" onClick={handleClose}><X /></button></div>
           </div>
-          <div className="flex flex-col gap-4 px-20">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-20">
             {children}
             <button disabled={isLoading} type="submit" className="mt-8 bg-slate-200 button">{buttonName}</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>  
   )

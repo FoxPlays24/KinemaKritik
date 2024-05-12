@@ -1,9 +1,10 @@
 
 
-import { LoginModal }      from "@/components/modal/LoginModal"
-import { RegisterModal }   from "@/components/modal/RegisterModal"
-import { PwdRecoverModal } from "@/components/modal/PwdRecoverModal"
+import { LoginModal }      from "./LoginModal"
+import { RegisterModal }   from "./RegisterModal"
+import { PwdRecoverModal } from "./PwdRecoverModal"
 import { ImageModal }      from "./media/ImageModal"
+import { Suspense } from "react"
 
 export function Modals() {
   return (
@@ -11,7 +12,9 @@ export function Modals() {
       <LoginModal />
       <RegisterModal />
       <PwdRecoverModal />
-      <ImageModal />
+      <Suspense>
+        <ImageModal />
+      </Suspense>
     </>
   )
 }

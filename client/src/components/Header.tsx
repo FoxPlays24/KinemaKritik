@@ -2,6 +2,7 @@
 
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useCallback, useEffect, useState } from "react"
 
 interface HeaderProps {
   icon?:          React.ReactElement
@@ -12,8 +13,20 @@ interface HeaderProps {
 
 export function Header({icon, title, secondary, hasBackButton}: HeaderProps) {
   const router = useRouter()
+
+  const [header, setHeader] = useState(false)
+
+  const scroll = useCallback(() => {
+    console.log(window.scrollY)
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('scroll', scroll)
+    return () => window.removeEventListener('scroll', scroll)
+  }, [])
+
   return (
-    <div className="sticky z-10 top-0 flex items-center gap-2 px-4 select-none h-20 bg-white/60 backdrop-blur-sm">
+    <div className={header ? "sticky header" : "header"}>
       { hasBackButton && <button onClick={() => router.back()} className="button"><ArrowLeft /></button> }
       <div className="flex flex-col">
         <h2 className="flex gap-2 text-xl items-center">{icon} {title}</h2>

@@ -28,7 +28,7 @@ export default async function FilmPage({ params }: any) {
           </div>
           <p className="text-xl whitespace-pre-line leading-relaxed">{review[0].content}</p>
         </div>
-        <VotesFooter votes={votes} />
+        {/* <VotesFooter votes={votes} voted /> */}
         
       </div>
     </>

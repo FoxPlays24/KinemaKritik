@@ -52,6 +52,8 @@ export function RegisterModal() {
       setErr(null)
 
       registerModal.onClose()
+
+      window.location.reload()
     } catch (err: any) {
       setErr(err.message)
     } finally {

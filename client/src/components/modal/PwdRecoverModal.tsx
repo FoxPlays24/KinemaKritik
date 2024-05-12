@@ -1,13 +1,20 @@
 "use client"
 
+import { useState } from "react"
 import { Modal } from "./Modal"
 import { usePwdRecoverModal } from '@/hooks/useModal'
 
 export function PwdRecoverModal({previousModal}: any) {
+  const [isLoading, setIsLoading] = useState(false)
+
   const pwdRecoverModal = usePwdRecoverModal()
 
+  function handleSubmit() {
+
+  }
+
   return (
-    <Modal previousModal={previousModal} title="Восстановление пароля" buttonName="Отправить код" isOpen={pwdRecoverModal.isOpen} handleClose={pwdRecoverModal.onClose}>
+    <Modal isLoading={isLoading} previousModal={previousModal} title="Восстановление пароля" buttonName="Отправить код" isOpen={pwdRecoverModal.isOpen} handleClose={pwdRecoverModal.onClose} handleSubmit={handleSubmit}>
       <p className="text-sm text-center">
         После нажатия кнопки "Отправить код" вам на почту, по которой зарегистрирован аккаунт, прийдет код для сброса пароля
       </p>

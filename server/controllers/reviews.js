@@ -9,13 +9,13 @@ export function getReviews(req, res) {
     const reviewId  = req.query.id
     const userLogin = req.query.user_login
     const filmLink  = req.query.film
-
-    query += 
+    
+    query += userLogin && filmLink ? ` WHERE users.login="${userLogin}" AND films.link="${filmLink}"` :
     reviewId ? ` WHERE reviews.id="${reviewId}"` :
     userLogin ? ` WHERE users.login="${userLogin}"` :
-    filmLink ? ` WHERE films.link="${filmLink}"` : " ORDER BY reviews.id DESC"
+    filmLink ? ` WHERE films.link="${filmLink}"` : ""
     
-    db.query(query)
+    db.query(query += " ORDER BY reviews.id DESC")
     .then(([result]) => res.json(result))
     .catch(err => res.json(err))
 }
@@ -52,4 +52,39 @@ export function voteReview(req, res) {
         db.query(`INSERT INTO review_ratings(user_id,review_id,voted) VALUES ((SELECT id FROM users WHERE login="${userLogin}"), ${reviewId}, ${voted}) ON DUPLICATE KEY UPDATE voted=VALUES(voted)`)
         .then(() => { return res.status(200).send(`К рецензии #${reviewId} добавлено ${voted} от пользователя ${userLogin}`) })
         .catch(err => res.status(500).json(err))
+}
+
+export const review = (req, res) => {
+    const userLogin = req.body.user_login,
+          filmLink  = req.body.link,
+          title     = req.body.title,
+          content   = req.body.content
+
+    if(!(title && content))
+        return res.status(500).json('Пожалуйста, введите данные')
+
+    db.query(`SELECT id FROM users WHERE login=?`, [userLogin]).then(([user]) => 
+    db.query(`SELECT id FROM films WHERE link=?`, [filmLink]).then(([film]) => 
+        db.query(`SELECT id FROM reviews WHERE user_id=? AND film_id=?`, [user[0].id,film[0].id])
+        .then(([review]) => {
+            if (review.length > 0)
+                db.query(`UPDATE reviews SET title="${title}", content="${content}" WHERE id=${review[0].id}`)
+                .then(() => { return res.status(200).send(`Рецензия пользователя ${userLogin} на фильм ${filmLink} успешно отредактирована`) })
+                .catch(err => res.status(500).json(err))
+            else
+                db.query(`INSERT INTO reviews(user_id,film_id,title,content) VALUES (?)`, [[user[0].id,film[0].id,title,content]])
+                .then(() => { return res.status(200).send(`Рецензия пользователя ${userLogin} на фильм ${filmLink} успешно добавлена`) })
+                .catch(err => res.status(500).json(err))
+        })
+        .catch(err => res.status(500).json(err))
+    )
+    )
+}
+
+export const reviewRemove = (req, res) => {
+    const id = req.body.review_id
+
+    db.query(`DELETE FROM reviews WHERE id=?`, [id])
+    .then(() => { return res.status(200).send(`Рецензия успешно удалена`) })
+    .catch(err => res.status(500).json(err))
 }

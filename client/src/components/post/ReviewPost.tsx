@@ -4,7 +4,6 @@ import Image from "next/image"
 import { bufferToBase64 } from "@/utils/strings"
 import { VotesFooter } from "../VotesFooter"
 import moment from "moment"
-import { getSession } from "@/utils/actions"
 
 function Header({ review, isFilmPage = false }: { review: any, isFilmPage: boolean }) {
   return (
@@ -37,13 +36,12 @@ async function Footer({ reviewId, votes, userLogin }: { reviewId: number, votes:
   )
 }
 
-export async function ReviewPost({ review, isFilmPage = false }: { review: any, isFilmPage?: boolean }) {
+export async function ReviewPost({ review, isFilmPage = false, userLogin }: { review: any, isFilmPage?: boolean, userLogin?: string }) {
   const votes = await fetch(`${process.env.API_URL}/review/votes?id=${review.id}`).then(res => res.json())
-  const session = await getSession()
 
   return (
     <Post header={<Header review={review} isFilmPage={isFilmPage} />} 
-          footer={<Footer userLogin={session.userLogin} reviewId={review.id} votes={votes} />} 
+          footer={<Footer userLogin={userLogin} reviewId={review.id} votes={votes} />} 
           title={review.title} href={`/review/${review.id}`} 
           icon={review.voted>0 ? <Heart /> : <HeartCrack className="text-rose-500" />}>
       <p className="text-slate-500 line-clamp-6 whitespace-pre-line leading-relaxed">{review.content}</p>

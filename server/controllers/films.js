@@ -24,8 +24,8 @@ export function getFilmGenres(req, res) {
 export function getFilmVotes(req, res) {
     const filmId = req.query.id
 
-    db.query(`SELECT SUM(film_ratings.voted) rating FROM film_ratings WHERE film_id=?`, filmId)
-    .then(([result]) => res.json(result[0].rating))
+    db.query(`SELECT SUM(film_ratings.voted) rating, COUNT(film_ratings.voted) count FROM film_ratings WHERE film_id=?`, filmId)
+    .then(([result]) => res.json(result[0]))
     .catch(err => res.json(err))
 }
 

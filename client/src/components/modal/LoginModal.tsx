@@ -5,6 +5,7 @@ import { Modal } from "./Modal"
 import { useLoginModal, usePwdRecoverModal, useRegisterModal } from '@/hooks/useModal'
 import { login } from "@/utils/actions"
 import { useState } from "react"
+import toast from "react-hot-toast"
 
 interface LoginButtonProps {
   svg?: string
@@ -40,10 +41,10 @@ export function LoginModal() {
   
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    setIsLoading(true)
     
     try {
-      setIsLoading(true)
-      
       const data = new FormData(event.currentTarget)
       const inputs = Object.fromEntries(data)
 
@@ -51,8 +52,8 @@ export function LoginModal() {
 
       setErr(null)
 
+      toast.success("Вы успешно вошли в профиль!")
       loginModal.onClose()
-      window.location.reload()
     } catch (err: any) {
       setErr(err.message)
     } finally {

@@ -1,11 +1,15 @@
 import { Header } from "@/components/Header"
+import { UserButtons } from "@/components/UserButtons"
 import { ReviewPost } from "@/components/post/ReviewPost"
+import { getSession } from "@/utils/actions"
 import { bufferToBase64, declOfNum } from "@/utils/strings"
 import { User } from "lucide-react"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
-function UserInfo({user}: any) {
+async function UserInfo({ user, login }: { user: any, login: string }) {
+  const session = await getSession()
+
   return (
     <div>
       {
@@ -21,6 +25,7 @@ function UserInfo({user}: any) {
           <h2 className='text-2xl font-semibold'>{user.username}</h2>
           <p className='text-slate-400 leading-none'>{user.status}</p>
         </div>
+        { session.userLogin === login && <UserButtons /> }
       </div>
     </div>
   )
@@ -38,7 +43,7 @@ export default async function UserPage({ params }: any) {
     <>
       <Header hasBackButton title={user[0].username} secondary={user[0]?.reviews>0 && `${user[0]?.reviews} ${declOfNum(user[0]?.reviews, ['рецензия', 'рецензии', 'рецензий'])}` || undefined} icon={<User />}/>
       <div className="flex flex-col p-4 gap-6">
-        <UserInfo user={user[0]} />
+        <UserInfo user={user[0]} login={login} />
         {
           reviews.map((review: any) => 
             <ReviewPost key={review.id} review={review} />)
