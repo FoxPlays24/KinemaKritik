@@ -36,7 +36,8 @@ export default async function UserPage({ params }: any) {
   const user = await fetch(`${process.env.API_URL}/user?login=${login}`, { cache: 'no-store' }).then(res => res.json())
   
   if (!user[0]) notFound()
-  
+
+  const session = await getSession()
   const reviews = await fetch(`${process.env.API_URL}/reviews?user_login=${login}`).then(res => res.json())
 
   return (
@@ -46,7 +47,7 @@ export default async function UserPage({ params }: any) {
         <UserInfo user={user[0]} login={login} />
         {
           reviews.map((review: any) => 
-            <ReviewPost key={review.id} review={review} />)
+            <ReviewPost key={review.id} review={review} userLogin={session.userLogin} />)
         }
       </div>
     </>

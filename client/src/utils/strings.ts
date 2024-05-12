@@ -8,5 +8,5 @@ export function bufferToBase64(buffer: string) {
 }
 
 export async function isImageFound(imageName: string) {
-  return await fetch(`http://localhost:443${imageName}`, { method: "HEAD" })
+  return await fetch(`${process.env.SITE_URL}${imageName}`, { method: "HEAD" })
 }
