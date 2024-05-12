@@ -1,0 +1,9 @@
+PORT       = port
+CLIENT_URL = "http(s)://yourfrontend.domain"
+
+# Database connection
+
+DB_HOST     = "host"
+DB_USER     = "user"
+DB_PASSWORD = "password"
+DB_DATABASE = "database"

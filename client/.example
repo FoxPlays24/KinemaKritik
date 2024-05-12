@@ -1,0 +1,3 @@
+API_URL = 'http(s)://yourbackend.domain'
+SECRET   = "secret"
+NODE_ENV = "development" # development / production
