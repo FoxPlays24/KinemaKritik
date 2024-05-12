@@ -108,6 +108,14 @@ async function FilmHeader({ film, link }: any) {
   )
 }
 
+export async function generateStaticParams() {
+  const films = await fetch(`${process.env.API_URL}/films`).then(res => res.json())
+
+  return films.map((film: any) => ({ 
+    link: film.link 
+  }))
+}
+
 export default async function FilmPage({ params }: any) {
   const link : string = params.link
   const film = await fetch(`${process.env.API_URL}/films?link=${link}`).then(res => res.json())

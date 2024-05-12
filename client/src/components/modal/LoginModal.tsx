@@ -54,6 +54,8 @@ export function LoginModal() {
 
       toast.success("Вы успешно вошли в профиль!")
       loginModal.onClose()
+      
+      window.location.reload()
     } catch (err: any) {
       setErr(err.message)
     } finally {

@@ -6,16 +6,10 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'i3.ytimg.com',
         port: '',
-        pathname: '/vi/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'm.media-amazon.com',
-        port: '',
-        pathname: '/images/M/**',
-      },
-    ],
-  },
+        pathname: '/vi/**'
+      }
+    ]
+  }
 }
 
 export default nextConfig 

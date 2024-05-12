@@ -3,7 +3,7 @@
 import { getIronSession } from "iron-session"
 import { sessionOptions, ISession, defaultSession } from "./lib"
 import { cookies } from "next/headers"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath } from "next/cache"
 
 //
 //
@@ -97,7 +97,7 @@ export async function vote(content: any, value: number) {
   if (!result || !result.ok)
     throw new Error(result.status)
 
-  revalidatePath("/", "page")
+  revalidatePath("/", "layout")
 }
 
 //
