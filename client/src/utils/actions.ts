@@ -95,7 +95,7 @@ export async function vote(content: any, value: number) {
   })
   
   if (!result || !result.ok)
-    throw new Error(result.status)
+    return result.status
 
   revalidatePath("/", "layout")
 }

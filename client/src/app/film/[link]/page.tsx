@@ -66,12 +66,16 @@ function InfoItem({condition, title, info}: InfoItemProps) {
 }
 
 function FilmInfo({film, genres}: any) {
+  const releaseDate = new Date(film.release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
+  const streamsDate = new Date(film.release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
+  const russiaDate = new Date(film.release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
+
   return (
     <div className='flex flex-col items-center gap-4'>
       <div className='flex flex-col w-[100%] relative'>
-        <InfoItem title="Дата выхода" info={new Date(film.release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })} />
-        <InfoItem condition={film.release_date_streams} title="стриминг-сервисы" info={new Date(film.release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })} />
-        <InfoItem condition={film.release_date_russia} title="в России" info={new Date(film.release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })} />
+        <InfoItem title="Дата выхода" info={releaseDate} />
+        <InfoItem condition={film.release_date_streams} title="стриминг-сервисы" info={streamsDate} />
+        <InfoItem condition={film.release_date_russia} title="в России" info={russiaDate} />
         
         <InfoItem title="Жанр" info={
           genres.map((genre: any, index: number) =>
@@ -92,6 +96,8 @@ function FilmInfo({film, genres}: any) {
 async function FilmHeader({ film, link }: any) {
   const hasCover = await isImageFound(`/films/banners/${link}.png`)
 
+  const filmYear = new Date(film.release_date).getFullYear()
+
   return (
     <>
       { 
@@ -101,7 +107,7 @@ async function FilmHeader({ film, link }: any) {
       }
       <div className="flex items-center">
         <h2 className="text-xl font-semibold">{film.title}</h2>
-        <p className="ml-auto text-sm">{film.age_limit} {film.original_title} {new Date(film.release_date).getFullYear()}</p>
+        <p className="ml-auto text-sm">{film.age_limit} {film.original_title} {filmYear}</p>
       </div>
       <hr />
     </>

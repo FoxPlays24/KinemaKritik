@@ -30,27 +30,28 @@ export function VotesFooter({votes, content, voted}: VotesFooterProps) {
   async function fetchClick(value: number) {
     const isCanceled = (value === userVote)
     const newValue = isCanceled ? 0 : value
-    
-    try {
-      setIsLoading(true)
 
-      await vote(content, newValue)
+    setIsLoading(true)
 
-      setCurVotes(isCanceled ? +curVotes-userVote : +curVotes-userVote + value)
-      setUserVote(newValue)
-    } catch (err: any) {
-      if (err.message == "401") {
+    const voting = await vote(content, newValue)
+
+    // Error occurs
+    if(voting) {
+      if(voting == "401") {
         toast.error("Чтобы оставить оценку, вы должны войти в профиль")
-        return loginModal.onOpen()
+        loginModal.onOpen()
+      } else {
+        console.error(voting)
       }
 
-      setCurVotes(votes)
-      setUserVote(voted)
-
-      console.error(err)
-    } finally {
       setIsLoading(false)
+      return
     }
+
+   setCurVotes(isCanceled ? +curVotes-userVote : +curVotes-userVote + value)
+   setUserVote(newValue)
+
+   setIsLoading(false)
   }
 
   return (
