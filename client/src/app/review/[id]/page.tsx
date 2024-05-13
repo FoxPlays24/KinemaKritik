@@ -1,17 +1,21 @@
 import { Header } from "@/components/Header"
 import { VotesFooter } from "@/components/VotesFooter"
+import { getSession } from "@/utils/actions"
 import { bufferToBase64 } from "@/utils/strings"
 import { Heart, HeartCrack, SquareGanttChart } from "lucide-react"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
-export default async function FilmPage({ params }: any) {
+export default async function ReviewPage({ params }: any) {
   const reviewId = params.id
   const review = await fetch(`${process.env.API_URL}/reviews?id=${reviewId}`, { cache: 'no-store' }).then(res => res.json())
   
   if (!review[0]) notFound()
 
   const votes = await fetch(`${process.env.API_URL}/review/votes?id=${review[0].id}`).then(res => res.json())
+  const session = await getSession()
+  const voted = session.userLogin && reviewId
+                && await fetch(`${process.env.API_URL}/review/voted?id=${reviewId}&user_login=${session.userLogin}`).then(res => res.json()) 
   
   return (
     <> 
@@ -28,7 +32,7 @@ export default async function FilmPage({ params }: any) {
           </div>
           <p className="text-xl whitespace-pre-line leading-relaxed">{review[0].content}</p>
         </div>
-        {/* <VotesFooter votes={votes} voted /> */}
+        <VotesFooter voted={voted} content={{reviewId: reviewId}} votes={votes} />
         
       </div>
     </>

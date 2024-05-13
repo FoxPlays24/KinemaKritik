@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.js'
 import filmRoutes from './routes/films.js'
 import userRoutes from './routes/users.js'
 import reviewRoutes from './routes/reviews.js'
+import replyRoutes from './routes/replies.js'
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use(authRoutes)
 app.use(filmRoutes)
 app.use(userRoutes)
 app.use(reviewRoutes)
+app.use(replyRoutes)
 
 const port = process.env.PORT
 app.listen(port, () => console.log(`Server is listening to port ${port}`))

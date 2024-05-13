@@ -6,6 +6,7 @@ import { Home, Info } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { bufferToBase64 } from "@/utils/strings"
+import { useEffect } from "react"
 
 export interface IUserInfo {
   login?:  string
@@ -26,13 +27,15 @@ export async function SideBar() {
   ]
 
   const session = await getSession()
-  const user = await fetch(`${process.env.API_URL}/user?login=${session.userLogin}`).then(res => res.json())
-  const userInfo : IUserInfo = user[0] ? {
+  const user = session.isLoggedIn ? await fetch(`${process.env.API_URL}/user?login=${session.userLogin}`).then(res => res.json()) : undefined
+  const userInfo : IUserInfo = session.isLoggedIn ?
+  {
     login:   session.userLogin,
     name:    user[0].username,
     status:  user[0].status,
     picture: bufferToBase64(user[0].profile_image) || '/placeholders/profile.png'
-  } : {
+  }
+  : {
     name:    'Гость',
     status:  'Вы в режиме гостя',
     picture: '/placeholders/profile.png'
