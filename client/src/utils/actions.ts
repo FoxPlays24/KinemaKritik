@@ -29,9 +29,9 @@ export async function register(inputs: any) {
     body: JSON.stringify(inputs)
   })
 
-  if (!result.ok) {
+  if (!result || !result.ok) {
     const data = await result.json()
-    throw new Error(data)
+    return { "type": result.status, "message": data }
   }
   
   session.userLogin  = inputs.login
@@ -49,12 +49,10 @@ export async function login(inputs: any) {
     body: JSON.stringify(inputs)
   })
   
-  if (!result.ok) {
-    const data = await result.json()
-    throw new Error(data)
-  }
-
   const data = await result.json()
+
+  if (!result || !result.ok)
+    return { "type": result.status, "message": data }
 
   session.userLogin  = data.login
   session.isLoggedIn = true
@@ -141,4 +139,82 @@ export async function reviewRemove(reviewId: string) {
   }
 
   revalidatePath("/film/", "layout")
+}
+
+//
+//
+// Profile
+//
+//
+
+interface IEditProfile {
+  userLogin:    string,
+  profileImage: string,
+  coverImage:   string,
+  username:     string,
+  status:       string
+}
+
+export async function editProfile({ userLogin, profileImage, coverImage, username, status }: IEditProfile) {
+  const result = await fetch(`${process.env.API_URL}/user/edit`, {
+    method: 'PATCH',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify({ 
+      login:         userLogin,
+      profile_image: profileImage,
+      cover_image:   coverImage,
+      username:      username,
+      status:        status
+    })
+  })
+
+  if (!result.ok) {
+    const data = await result.json()
+    console.error(data)
+  }
+
+  revalidatePath("/user/", "layout")
+}
+
+//
+//
+// Reply
+//
+//
+
+export async function reply({ reviewId, parentId, content }: { reviewId: string, parentId?: string, content: string }) {
+  const session = await getSession()
+
+  const result = await fetch(`${process.env.API_URL}/reply`, {
+    method: 'POST',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify({ 
+      user_login: session.userLogin,
+      review_id: reviewId,
+      parent_id: parentId,
+      content
+    })
+  })
+
+  if (!result.ok) {
+    const data = await result.json()
+    console.error(data)
+    throw new Error(data)
+  }
+
+  revalidatePath("/review/", "layout")
+}
+
+export async function replyRemove(replyId: string) {
+  const result = await fetch(`${process.env.API_URL}/reply?reply_id=${replyId}`, {
+    method: 'DELETE',
+    headers: { 'Content-type': 'application/json' }
+  })
+
+  if (!result.ok) {
+    const data = await result.json()
+    throw new Error(data)
+  }
+
+  revalidatePath("/review/", "layout")
 }

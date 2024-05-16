@@ -27,40 +27,43 @@ export function LoginModal() {
 
   const loginModal      = useLoginModal()
   const registerModal   = useRegisterModal()
-  const pwdRecoverModal = usePwdRecoverModal()
+  // const pwdRecoverModal = usePwdRecoverModal()
 
   const onToggle = () => {
     loginModal.onClose()
     registerModal.onOpen()
   }
 
-  const onRecover = () => {
-    loginModal.onClose()
-    pwdRecoverModal.onOpen()
-  }
+  // const onRecover = () => {
+  //   loginModal.onClose()
+  //   pwdRecoverModal.onOpen()
+  // }
   
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     setIsLoading(true)
-    
-    try {
-      const data = new FormData(event.currentTarget)
-      const inputs = Object.fromEntries(data)
 
-      await login(inputs)
+    const data = new FormData(event.currentTarget)
+    const inputs = Object.fromEntries(data)
 
-      setErr(null)
+    const logining = await login(inputs)
 
-      toast.success("Вы успешно вошли в профиль!")
-      loginModal.onClose()
-      
-      window.location.reload()
-    } catch (err: any) {
-      setErr(err.message)
-    } finally {
+    if(logining && logining.type == 404 ) {
+      setErr(logining.message)
+      loginModal.onOpen()
       setIsLoading(false)
+      return
     }
+
+    setErr(null)
+
+    toast.success("Вы успешно вошли в профиль!")
+    loginModal.onClose()
+    
+    setIsLoading(false)
+    
+    window.location.reload()
   }
 
   return (
@@ -68,10 +71,10 @@ export function LoginModal() {
       <p className="text-sm text-center">
         Продолжая, вы соглашаетесь с <a href="/terms" className="link">пользовательским соглашением</a> и подтверждаете, что ознакомились с <a href="/privacy" className="link">политикой конфиденциальности сайта</a>
       </p>
-      <div className="flex flex-col justify-center gap-2">
+      {/* <div className="flex flex-col justify-center gap-2">
         <LoginButton svg="/google.svg" name="Google" />
         <LoginButton svg="/telegram.svg" name="Telegram" />
-      </div>
+      </div> */}
       <div className="inline-flex items-center justify-center w-full select-none">
         <hr className="w-[31rem] h-px border-0 my-2 bg-slate-300" />
         <span className="absolute px-3 bg-white text-slate-300">ИЛИ</span>
@@ -80,7 +83,7 @@ export function LoginModal() {
       <input name='password' placeholder="Пароль" spellCheck="false" type="password" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
       <p className='text-red-600'>{err}</p>
       <div>
-        <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span>
+        {/* <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span> */}
         <p>Нет аккаунта? <span onClick={onToggle} className="link cursor-pointer">Зарегистрируйтесь на КинемаКритик!</span></p>
       </div>
     </Modal>

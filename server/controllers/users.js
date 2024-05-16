@@ -10,3 +10,15 @@ export function getUser(req, res) {
     .then(([result]) => res.json(result))
     .catch(err => res.json(err))
 }
+
+export const editUser = (req, res) => {
+    const login        = req.body.login,
+          profileImage = req.body.profile_image ? `'${Buffer.from(req.body.profile_image).toString()}'` : null,
+          coverImage   = req.body.cover_image ? `'${Buffer.from(req.body.cover_image).toString()}'` : null,
+          username     = req.body.username,
+          status       = req.body.status || ""
+
+    db.query(`UPDATE profiles SET username='${username}', status='${status}', profile_image=${profileImage}, cover_image=${coverImage} WHERE user_id=(SELECT id FROM users WHERE login='${login}')`)
+    .then(([result]) => res.json(result))
+    .catch(err => res.status(500).send(err))
+}

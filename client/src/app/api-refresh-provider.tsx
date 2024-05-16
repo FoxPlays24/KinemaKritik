@@ -5,7 +5,7 @@ import { useEffect } from "react"
 
 export function APIRefreshProvider() {
   const router = useRouter()
-  useEffect(() => { setTimeout(() => router.refresh(), 5000) }) // refresh every 5 sec
+  useEffect(() => { setTimeout(() => router.refresh(), 10000) }) // refresh every 10 sec
 
   return <></>
 }

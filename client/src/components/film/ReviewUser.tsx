@@ -1,6 +1,6 @@
 "use client"
 
-import { Bold, CircleHelp, Heart, HeartCrack, Italic, SquarePen, Star, Trash2, Underline } from "lucide-react"
+import { CircleHelp, Heart, HeartCrack, SquarePen, Trash2 } from "lucide-react"
 import { useLoginModal } from "@/hooks/useModal"
 import ReactTextareaAutosize from "react-textarea-autosize"
 import { useState } from "react"
@@ -39,6 +39,7 @@ function NewReview({ filmLink, id, hidden, disabled, isVoted, userReview }: { fi
   }
 
   async function handleDelete() {
+    setIsLoading(true)
     if (!deleteConfirm) {
       setDeleteConfirm(true)
       setTimeout(() => {
@@ -52,6 +53,7 @@ function NewReview({ filmLink, id, hidden, disabled, isVoted, userReview }: { fi
       setContent("")
       setDeleteConfirm(false)
     }
+    setIsLoading(false)
   }
 
   return (

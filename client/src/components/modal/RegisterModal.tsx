@@ -5,6 +5,7 @@ import { Modal } from "./Modal"
 import { useLoginModal, usePwdRecoverModal, useRegisterModal } from '@/hooks/useModal'
 import { useState } from "react"
 import { register } from "@/utils/actions"
+import toast from "react-hot-toast"
 
 interface RegisterButtonProps {
   svg?: string;
@@ -26,39 +27,41 @@ export function RegisterModal() {
   
   const registerModal   = useRegisterModal()
   const loginModal      = useLoginModal()
-  const pwdRecoverModal = usePwdRecoverModal()
+  // const pwdRecoverModal = usePwdRecoverModal()
 
   const onToggle = () => {
     registerModal.onClose()
     loginModal.onOpen()
   }
 
-  const onRecover = () => {
-    registerModal.onClose()
-    pwdRecoverModal.onOpen()
-  }
+  // const onRecover = () => {
+  //   registerModal.onClose()
+  //   pwdRecoverModal.onOpen()
+  // }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    try {
-      setIsLoading(true)
-      
-      const data = new FormData(event.currentTarget)
-      const inputs = Object.fromEntries(data)
+    setIsLoading(true)
+    
+    const data = new FormData(event.currentTarget)
+    const inputs = Object.fromEntries(data)
 
-      await register(inputs)
+    const registrating = await register(inputs)
 
-      setErr(null)
-
-      registerModal.onClose()
-
-      window.location.reload()
-    } catch (err: any) {
-      setErr(err.message)
-    } finally {
+    if(registrating && registrating.type == 500) {
+      setErr(registrating.message)
+      registerModal.onOpen()
       setIsLoading(false)
+      return
     }
+    
+    setErr(null)
+
+    toast.success("Вы успешно зарегистировались!")
+    registerModal.onClose()
+
+    setIsLoading(false)
   }
 
   return (
@@ -66,10 +69,10 @@ export function RegisterModal() {
       <p className="text-sm text-center">
         Продолжая, вы соглашаетесь с <a href="/terms" className="link">пользовательским соглашением</a> и подтверждаете, что ознакомились с <a href="/privacy" className="link">политикой конфиденциальности сайта</a>
       </p>
-      <div className="flex flex-col justify-center gap-2">
+      {/* <div className="flex flex-col justify-center gap-2">
         <RegisterButton svg="/google.svg" name="Google" />
         <RegisterButton svg="/telegram.svg" name="Telegram" />
-      </div>
+      </div> */}
       <div className="inline-flex items-center justify-center w-full select-none">
         <hr className="w-[31rem] h-px border-0 my-2 bg-slate-300" />
         <span className="absolute px-3 bg-white text-slate-300">ИЛИ</span>
@@ -79,7 +82,7 @@ export function RegisterModal() {
       <input name='password' placeholder="Пароль" spellCheck="false" type="password" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
       <div>
       <p className='text-red-600'>{err}</p>
-      <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span>
+      {/* <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span> */}
         <p>Уже есть аккаунт? <span onClick={onToggle} className="link cursor-pointer">Войдите в него!</span></p>
       </div>
     </Modal>

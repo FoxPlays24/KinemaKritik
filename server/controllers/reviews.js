@@ -36,6 +36,13 @@ export const getReviewVoted = (req, res) => {
     .catch(err => res.json(err))
 }
 
+export const getReviewRepliesCount = (req, res) => {
+    const reviewId = req.query.id
+    db.query(`SELECT COUNT(id) replies_count FROM replies WHERE review_id=?`, reviewId)
+    .then(([result]) => res.json(result[0].replies_count))
+    .catch(err => res.json(err))
+}
+
 export function voteReview(req, res) {
     const userLogin = req.body.user_login,
           reviewId  = req.body.review_id,

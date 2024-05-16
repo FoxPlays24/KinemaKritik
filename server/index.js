@@ -4,11 +4,12 @@ import express from 'express'
 
 import cors from 'cors'
 
-import authRoutes from './routes/auth.js'
-import filmRoutes from './routes/films.js'
-import userRoutes from './routes/users.js'
+import authRoutes   from './routes/auth.js'
+import filmRoutes   from './routes/films.js'
+import userRoutes   from './routes/users.js'
 import reviewRoutes from './routes/reviews.js'
-import replyRoutes from './routes/replies.js'
+import replyRoutes  from './routes/replies.js'
+import genreRoutes  from './routes/genres.js'
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use(filmRoutes)
 app.use(userRoutes)
 app.use(reviewRoutes)
 app.use(replyRoutes)
+app.use(genreRoutes)
 
 const port = process.env.PORT
 app.listen(port, () => console.log(`Server is listening to port ${port}`))

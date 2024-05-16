@@ -24,24 +24,24 @@ function Header({ review, isFilmPage = false }: { review: any, isFilmPage: boole
   )
 }
 
-async function Footer({ reviewId, votes, userLogin }: { reviewId: number, votes: number, userLogin?: string }) {
+async function Footer({ reviewId, userLogin }: { reviewId: number, userLogin?: string }) {
+  const votes = await fetch(`${process.env.API_URL}/review/votes?id=${reviewId}`).then(res => res.json())
   const voted = userLogin && reviewId
                 && await fetch(`${process.env.API_URL}/review/voted?id=${reviewId}&user_login=${userLogin}`).then(res => res.json()) 
+  const replies = await fetch(`${process.env.API_URL}/review/replies?id=${reviewId}`).then(res => res.json())
   
   return (
     <div className="flex gap-4 items-center">
       <VotesFooter voted={voted} content={{reviewId: reviewId}} votes={votes} />
-      <a href={`/review/${reviewId}`} className="button bg-slate-200"><MessageCircle /> <p>0</p></a>
+      <a href={`/review/${reviewId}`} className="button bg-slate-200"><MessageCircle /> {replies}</a>
     </div>
   )
 }
 
 export async function ReviewPost({ review, isFilmPage = false, userLogin }: { review: any, isFilmPage?: boolean, userLogin?: string }) {
-  const votes = await fetch(`${process.env.API_URL}/review/votes?id=${review.id}`).then(res => res.json())
-
   return (
     <Post header={<Header review={review} isFilmPage={isFilmPage} />} 
-          footer={<Footer userLogin={userLogin} reviewId={review.id} votes={votes} />} 
+          footer={<Footer userLogin={userLogin} reviewId={review.id} />} 
           title={review.title} href={`/review/${review.id}`} 
           icon={review.voted>0 ? <Heart /> : <HeartCrack className="text-rose-500" />}>
       <p className="text-slate-500 line-clamp-6 whitespace-pre-line leading-relaxed">{review.content}</p>

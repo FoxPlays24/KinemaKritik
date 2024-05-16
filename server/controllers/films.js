@@ -1,10 +1,24 @@
 import { db } from '../db.js'
 
 export function getFilms(req, res) {
-    let query = "SELECT films.id, link, title, original_title, description, country, film_types.name film_type, age_limits.name age_limit, release_date, release_date_streams, release_date_russia, created_at, trailer_ytId, director FROM films JOIN film_types ON film_types.id=film_type JOIN age_limits ON age_limits.id=age_limit"
+    let query = `SELECT films.id, link, title, original_title, description, country, film_types.name film_type, age_limits.name age_limit, release_date, 
+    release_date_streams, release_date_russia, created_at, trailer_ytId, director 
+    FROM films 
+    JOIN film_types ON film_types.id=film_type JOIN age_limits ON age_limits.id=age_limit`
+
     const link = req.query.link
-    
-    query += link ? ` WHERE link="${link}"` : " ORDER BY films.id DESC"
+    const genre_id = req.query.genre_id
+
+    if (genre_id)
+        query = `SELECT films.id, link, title, original_title, description, country, film_types.name film_type, age_limits.name age_limit, release_date, 
+    release_date_streams, release_date_russia, created_at, trailer_ytId, director 
+    FROM film_genres 
+    JOIN films ON films.id=film_id
+    JOIN film_types ON film_types.id=film_type 
+    JOIN age_limits ON age_limits.id=age_limit
+    WHERE genre_id=${genre_id}`
+
+    query += link && !genre_id ? ` WHERE link="${link}"` : ' ORDER BY films.id DESC'
 
     db.query(query)
     .then(([result]) => res.json(result))
@@ -14,7 +28,7 @@ export function getFilms(req, res) {
 export function getFilmGenres(req, res) {
     const filmId = req.query.id
 
-    if(!filmId) return res.status(404).send("Please, enter film's id in query")
+    if(!filmId) return res.status(404).send("Пожалуйста, введите id кино")
 
     db.query(`SELECT genres.id, genres.name FROM film_genres JOIN genres ON genres.id=genre_id WHERE film_id=?`, [filmId])
     .then(([result]) => res.json(result))

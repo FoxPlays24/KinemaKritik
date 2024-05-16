@@ -15,12 +15,12 @@ export default async function MainPage() {
       <Header title="Лента" icon={<Home />}/>
       <div className="flex flex-col p-4 gap-4">
         {
-          films.map((film: any) => 
-            <FilmPost key={film.id} film={film} />)
-        }
-        {
           reviews.map((review: any) => 
             <ReviewPost key={review.id} review={review} userLogin={session.userLogin} />)
+        }
+        {
+          films.map((film: any) => 
+            <FilmPost key={film.id} film={film} />)
         }
       </div>
     </>

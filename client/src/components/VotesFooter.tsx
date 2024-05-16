@@ -36,13 +36,9 @@ export function VotesFooter({votes, content, voted}: VotesFooterProps) {
     const voting = await vote(content, newValue)
 
     // Error occurs
-    if(voting) {
-      if(voting == "401") {
-        toast.error("Чтобы оставить оценку, вы должны войти в профиль")
-        loginModal.onOpen()
-      } else {
-        console.error(voting)
-      }
+    if(voting && voting == "401") {
+      toast.error("Чтобы оставить оценку, вы должны войти в профиль")
+      loginModal.onOpen()
 
       setIsLoading(false)
       return

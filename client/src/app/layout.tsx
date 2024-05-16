@@ -27,12 +27,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <APIRefreshProvider />
         <Toaster />
         <Modals />
-        <div className="flex justify-center min-h-screen">
-          <SideBar /> 
-          <main className='bg-white mx-[2%] shadow-lg w-[48rem] h-screen overflow-y-auto scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thin'>
+        <div className="flex justify-center min-h-screen gap-6">
+          <SideBar />
+          <BlockBar />
+          <main className='bg-white shadow-lg w-[48rem] h-screen overflow-y-auto scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thin'>
             {children}
           </main>
-          <BlockBar />
         </div>
       </body>
     </html>

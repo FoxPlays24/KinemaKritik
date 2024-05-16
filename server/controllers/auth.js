@@ -12,9 +12,9 @@ export async function register(req, res) {
     if (password.length < 6)
         return res.status(500).json('Минимальная длина пароля 6 символов')
 
-    const passwordRegex = /(?=.*[!@#$%^&*()+:;.,])/;
-    if (passwordRegex.test(password))
-        return res.status(500).json('Пароль не должен содержать специальные символы (!"№;%:?*()+:;.,)')
+    const regexCheck = /(?=.*[!@#$%^&*()+:;.,])/;
+    if (regexCheck.test(login) || regexCheck.test(password))
+        return res.status(500).json('Логин/пароль не должен содержать специальные символы (!"№;%:?*()+:;.,)')
  
     const hashedPassword = await hashPassword(password)
 

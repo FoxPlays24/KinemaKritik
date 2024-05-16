@@ -1,3 +1,4 @@
+import { Loader } from "lucide-react"
 import Image from "next/image"
 
 const Block = ({film}: any) => {
@@ -14,8 +15,8 @@ export async function BlockBar() {
   const films = await fetch(`${process.env.API_URL}/films`).then(res => res.json())
 
   return (
-    <div className="hidden lg:flex justify-start mr-8 h-screen">
-      <div className="flex flex-col gap-4 items-center bg-white h-full border border-gray-2 divide-gray-2 shadow-lg px-4 pt-8 select-none">
+    <div className="order-1 hidden lg:flex h-screen">
+      <div className="flex flex-col gap-4 items-center bg-white w-80 h-full border border-gray-2 divide-gray-2 shadow-lg px-4 pt-8 select-none">
         <h2 className="text-xl font-semibold">Последнее кино</h2>
         <div className="pr-2 overflow-y-scroll scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thin flex flex-col w-72">
           { films?.map((film: any) => <Block key={film.id} film={film} />) }

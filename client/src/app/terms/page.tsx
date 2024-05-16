@@ -8,7 +8,7 @@ export default function Terms() {
     <Suspense>
       <Header hasBackButton title="Пользовательское соглашение" icon={<Scale />}/>
       <Image src="/logo.svg" width={128} height={128} className="mx-auto" alt="Logo" priority={true} />
-      <div className="p-4 text-justify mt-6 mb-24 text-sm">
+      <div className="p-4 text-justify mt-6 mb-28 text-sm">
 Настоящее Пользовательское Соглашение регулирует отношения между владельцем <b>https://kinemakritik.ru</b> (далее КинемаКритик или Администрация) с одной стороны и пользователем сайта с другой.
 Сайт КинемаКритик не является средством массовой информации.<br/>
 <br/>
