@@ -42,7 +42,7 @@ body {
     group-active:brightness-75 group-active:scale-90 object-cover
   }
   .header {
-    @apply z-10 top-0 flex items-center gap-2 px-4 select-none h-20 bg-white/60 backdrop-blur-sm
+    @apply z-10 w-[49rem] fixed flex items-center gap-2 px-4 select-none h-20 bg-white/80 backdrop-blur-sm
   }
 }
 

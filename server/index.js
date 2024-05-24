@@ -10,6 +10,7 @@ import userRoutes   from './routes/users.js'
 import reviewRoutes from './routes/reviews.js'
 import replyRoutes  from './routes/replies.js'
 import genreRoutes  from './routes/genres.js'
+import searchRoutes from './routes/search.js'
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.use(userRoutes)
 app.use(reviewRoutes)
 app.use(replyRoutes)
 app.use(genreRoutes)
+app.use(searchRoutes)
 
 const port = process.env.PORT
 app.listen(port, () => console.log(`Server is listening to port ${port}`))
