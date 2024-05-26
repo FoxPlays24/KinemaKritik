@@ -1,7 +1,7 @@
 import { VotesFooter } from "../VotesFooter"
 
 export async function Vote({ filmId, voted }: { filmId: string, voted: number }) {
-  const votes = await fetch(`${process.env.API_URL}/film/votes?id=${filmId}`).then(res => res.json())
+  const votes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/votes?id=${filmId}`).then(res => res.json())
   
   return (
     <div className="flex flex-col gap-4 divide-slate-300">

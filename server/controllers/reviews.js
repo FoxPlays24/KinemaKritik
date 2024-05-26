@@ -22,8 +22,8 @@ export function getReviews(req, res) {
 
 export function getReviewVotes(req, res) {
     const reviewId = req.query.id
-    db.query(`SELECT SUM(review_ratings.voted) rating FROM review_ratings WHERE review_id=?`, reviewId)
-    .then(([result]) => res.json(result[0].rating))
+    db.query(`SELECT SUM(review_ratings.voted) rating, COUNT(review_ratings.voted) count FROM review_ratings WHERE review_id=?`, reviewId)
+    .then(([result]) => res.json(result[0]))
     .catch(err => res.json(err))
 }
 

@@ -4,8 +4,8 @@ import { ReviewUser } from "./ReviewUser"
 
 export async function Reviews({ filmLink, isVoted }: { filmLink: string, isVoted: number }) {
   const session = await getSession()
-  const reviews = await fetch(`${process.env.API_URL}/reviews?film=${filmLink}`).then(res => res.json())
-  const review = await fetch(`${process.env.API_URL}/reviews?film=${filmLink}&user_login=${session.userLogin}`).then(res => res.json())
+  const reviews = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?film=${filmLink}`).then(res => res.json())
+  const review = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?film=${filmLink}&user_login=${session.userLogin}`).then(res => res.json())
 
   return (
     <div className="flex flex-col gap-4 divide-slate-300">

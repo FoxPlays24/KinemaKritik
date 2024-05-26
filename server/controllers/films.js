@@ -43,6 +43,14 @@ export function getFilmVotes(req, res) {
     .catch(err => res.json(err))
 }
 
+export function getFilmReviewsCount(req, res) {
+    const filmId = req.query.id
+
+    db.query(`SELECT COUNT(reviews.id) count FROM reviews WHERE film_id=?`, filmId)
+    .then(([result]) => res.json(result[0]))
+    .catch(err => res.json(err))
+}
+
 export const getFilmVoted = (req, res) => {
     const userLogin = req.query.user_login,
           filmId    = req.query.id

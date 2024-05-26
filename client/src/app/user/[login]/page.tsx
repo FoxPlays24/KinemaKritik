@@ -8,13 +8,13 @@ import { notFound } from "next/navigation"
 
 export default async function UserPage({ params }: any) {
   const login = params.login
-  let user = await fetch(`${process.env.API_URL}/user?login=${login}`, { cache: 'no-store' }).then(res => res.json())
+  let user = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user?login=${login}`, { cache: 'no-store' }).then(res => res.json())
   
   if (!user[0]) notFound()
   user = user[0]
 
   const session = await getSession()
-  const reviews = await fetch(`${process.env.API_URL}/reviews?user_login=${login}`).then(res => res.json())
+  const reviews = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?user_login=${login}`).then(res => res.json())
 
   return (
     <>

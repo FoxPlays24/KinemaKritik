@@ -5,6 +5,7 @@ import { RegisterModal }   from "./RegisterModal"
 import { PwdRecoverModal } from "./PwdRecoverModal"
 import { ImageModal }      from "./media/ImageModal"
 import { Suspense } from "react"
+import { RecoverCodeModal } from "./RecoverCodeModal"
 
 export function Modals() {
   return (
@@ -12,6 +13,7 @@ export function Modals() {
       <LoginModal />
       <RegisterModal />
       <PwdRecoverModal />
+      <RecoverCodeModal />
       <Suspense>
         <ImageModal />
       </Suspense>

@@ -8,9 +8,11 @@ export function getReplies(req, res) {
     const replyId  = req.query.id
     const reviewId  = req.query.review_id
     const userLogin = req.query.user_login
+    const parentId = req.query.parent_id
     
-    query += reviewId ? ` WHERE replies.review_id=${reviewId}` :
-    replyId ? ` WHERE reviews.id="${reviewId}"` :
+    query += parentId ? ` WHERE parent_id=${parentId}` :
+    reviewId ? ` WHERE replies.review_id=${reviewId}` :
+    replyId ? ` WHERE replies.id=${replyId}` :
     userLogin ? ` WHERE users.login="${userLogin}"` : ""
     
     db.query(query += " ORDER BY replies.id DESC")

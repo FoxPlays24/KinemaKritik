@@ -27,7 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Toaster />
         <Modals />
         <NavBar />
-        <div className="flex justify-center gap-6 h-screen">
+        <div className="flex justify-center gap-6 ">
           <CategoriesBar />
           <BlockBar />
           <main className='bg-white shadow-lg w-[50rem] overflow-y-auto scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thin'>

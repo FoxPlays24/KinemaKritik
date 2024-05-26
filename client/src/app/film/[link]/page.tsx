@@ -95,7 +95,6 @@ function FilmInfo({film, genres}: any) {
 
 async function FilmHeader({ film, link }: any) {
   const hasCover = await isImageFound(`/films/banners/${link}.png`)
-
   const filmYear = new Date(film.release_date).getFullYear()
 
   return (
@@ -115,7 +114,7 @@ async function FilmHeader({ film, link }: any) {
 }
 
 export async function generateStaticParams() {
-  const films = await fetch(`${process.env.API_URL}/films`).then(res => res.json())
+  const films = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
 
   return films.map((film: any) => ({ 
     link: film.link 
@@ -124,25 +123,26 @@ export async function generateStaticParams() {
 
 export default async function FilmPage({ params }: any) {
   const link : string = params.link
-  const film = await fetch(`${process.env.API_URL}/films?link=${link}`).then(res => res.json())
+  let film = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films?link=${link}`).then(res => res.json())
   
   if (!film[0]) notFound()
+  film = film[0]
 
   const session = await getSession()
   const voted = session.userLogin
-              ? await fetch(`${process.env.API_URL}/film/voted?id=${film[0].id}&user_login=${session.userLogin}`).then(res => res.json()) 
+              ? await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/voted?id=${film.id}&user_login=${session.userLogin}`).then(res => res.json()) 
               : undefined
 
-  const genres = await fetch(`${process.env.API_URL}/film/genres?id=${film[0].id}`).then(res => res.json())
+  const genres = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/genres?id=${film.id}`).then(res => res.json())
   
   return (
-    <>
-      <Header hasBackButton title="Кино" icon={<Film />}/>
+    <>  
+      <Header hasBackButton title={`${film.film_type} "${film.title}"`} icon={<Film />}/>
       <div className="flex flex-col p-4 gap-4 divide-slate-300">
-        <FilmHeader film={film[0]} link={link} />
-        <FilmInfo film={film[0]} genres={genres} link={link} />
-        <Gallery film={film[0]} link={link} />
-        <Vote voted={voted} filmId={film[0].id} />
+        <FilmHeader film={film} link={link} />
+        <FilmInfo film={film} genres={genres} link={link} />
+        <Gallery film={film} link={link} />
+        <Vote voted={voted} filmId={film.id} />
         <Reviews isVoted={voted} filmLink={link} />
       </div>
     </>

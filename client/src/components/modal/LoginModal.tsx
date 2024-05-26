@@ -27,17 +27,17 @@ export function LoginModal() {
 
   const loginModal      = useLoginModal()
   const registerModal   = useRegisterModal()
-  // const pwdRecoverModal = usePwdRecoverModal()
+  const pwdRecoverModal = usePwdRecoverModal()
 
   const onToggle = () => {
     loginModal.onClose()
     registerModal.onOpen()
   }
 
-  // const onRecover = () => {
-  //   loginModal.onClose()
-  //   pwdRecoverModal.onOpen()
-  // }
+  const onRecover = () => {
+    loginModal.onClose()
+    pwdRecoverModal.onOpen()
+  }
   
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -51,7 +51,6 @@ export function LoginModal() {
 
     if(logining && logining.type == 404 ) {
       setErr(logining.message)
-      loginModal.onOpen()
       setIsLoading(false)
       return
     }
@@ -83,7 +82,7 @@ export function LoginModal() {
       <input name='password' placeholder="Пароль" spellCheck="false" type="password" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
       <p className='text-red-600'>{err}</p>
       <div>
-        {/* <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span> */}
+        <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span>
         <p>Нет аккаунта? <span onClick={onToggle} className="link cursor-pointer">Зарегистрируйтесь на КинемаКритик!</span></p>
       </div>
     </Modal>

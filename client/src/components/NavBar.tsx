@@ -22,7 +22,7 @@ const Logo = () =>
 
 export async function NavBar() {
   const session = await getSession()
-  const user = session.isLoggedIn ? await fetch(`${process.env.API_URL}/user?login=${session.userLogin}`).then(res => res.json()) : undefined
+  const user = session.isLoggedIn ? await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user?login=${session.userLogin}`).then(res => res.json()) : undefined
   const userInfo : IUserInfo = session.isLoggedIn ?
   {
     login:   session.userLogin,

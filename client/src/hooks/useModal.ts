@@ -24,6 +24,12 @@ export const usePwdRecoverModal = create<ModalStore>((set) => ({
   onClose: () => set({ isOpen: false })
 }))
 
+export const useRecoverCodeModal = create<ModalStore>((set) => ({
+  isOpen:  false,
+  onOpen:  () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false })
+}))
+
 export const useGalleryImageModal = create<ModalStore>((set) => ({
   isOpen:  false,
   onOpen:  () => set({ isOpen: true }),

@@ -5,7 +5,7 @@ import Image from "next/image"
 export default function Privacy() {
   return (
     <>
-      <Header hasBackButton title="О сайте" icon={<Info />}/>
+      <Header title="О сайте" icon={<Info />}/>
       <Image src="/logo.svg" width={128} height={128} className="mx-auto" alt="Logo" priority />
       <div className="text-center p-4 mt-6 mb-24 text-xl">
         <div className="mb-8">

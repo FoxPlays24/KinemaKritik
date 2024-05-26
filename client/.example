@@ -1,4 +1,4 @@
-SITE_URL = 'http(s)://yourbackend.domain'
-API_URL  = 'http(s)://yourbackend.domain'
-SECRET   = "secret"
-NODE_ENV = "development" # development / production
+SITE_URL            = 'http(s)://yourbackend.domain'
+NEXT_PUBLIC_API_URL = 'http(s)://yourbackend.domain'
+SECRET              = "secret"
+NODE_ENV            = "development" # development / production

@@ -28,9 +28,11 @@ export function SearchInput() {
   const [result, setResult] = useState([])
 
   useEffect(() => {
+    if (!value) return
+    
     const fetchData = async () => {
       try {
-        const result = await fetch(`http://localhost:3000/search?query=${value}`).then(res => res.json())
+        const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/search?query=${value}`).then(res => res.json())
         setResult(result)
       } catch (err) {}
     }

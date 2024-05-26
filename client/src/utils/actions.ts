@@ -23,7 +23,7 @@ export async function getSession() {
 export async function register(inputs: any) {
   const session = await getSession()
 
-  const result = await fetch(`${process.env.API_URL}/register`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(inputs)
@@ -43,7 +43,7 @@ export async function register(inputs: any) {
 export async function login(inputs: any) {
   const session = await getSession()
   
-  const result = await fetch(`${process.env.API_URL}/login`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(inputs)
@@ -65,6 +65,20 @@ export async function logout() {
   session.destroy()
 }
 
+export async function compareLoginMail(loginMail: string) {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/compare`, {
+    method: 'POST',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify({ login_mail: loginMail })
+  })
+  const data = await result.json()
+
+  if (!result || !result.ok)
+    return { "type": result.status, "message": data }
+  
+  return data
+}
+
 //
 //
 // Vote
@@ -74,7 +88,7 @@ export async function logout() {
 export async function vote(content: any, value: number) {
   const session = await getSession()
 
-  const result = content.reviewId && await fetch(`${process.env.API_URL}/review/vote`, {
+  const result = content.reviewId && await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review/vote`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify({ 
@@ -82,7 +96,7 @@ export async function vote(content: any, value: number) {
       review_id:  content.reviewId,
       voted:      value
     })
-  }) || content.filmId && await fetch(`${process.env.API_URL}/film/vote`, {
+  }) || content.filmId && await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/vote`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify({ 
@@ -107,7 +121,7 @@ export async function vote(content: any, value: number) {
 export async function review({ filmLink, title, content }: { filmLink: string, title: string, content: string }) {
   const session = await getSession()
 
-  const result = await fetch(`${process.env.API_URL}/review`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify({ 
@@ -127,7 +141,7 @@ export async function review({ filmLink, title, content }: { filmLink: string, t
 }
 
 export async function reviewRemove(reviewId: string) {
-  const result = await fetch(`${process.env.API_URL}/review/remove`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review/remove`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify({ review_id: reviewId })
@@ -156,7 +170,7 @@ interface IEditProfile {
 }
 
 export async function editProfile({ userLogin, profileImage, coverImage, username, status }: IEditProfile) {
-  const result = await fetch(`${process.env.API_URL}/user/edit`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/edit`, {
     method: 'PATCH',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify({ 
@@ -185,7 +199,7 @@ export async function editProfile({ userLogin, profileImage, coverImage, usernam
 export async function reply({ reviewId, parentId, content }: { reviewId: string, parentId?: string, content: string }) {
   const session = await getSession()
 
-  const result = await fetch(`${process.env.API_URL}/reply`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reply`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify({ 
@@ -206,7 +220,7 @@ export async function reply({ reviewId, parentId, content }: { reviewId: string,
 }
 
 export async function replyRemove(replyId: string) {
-  const result = await fetch(`${process.env.API_URL}/reply?reply_id=${replyId}`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reply?reply_id=${replyId}`, {
     method: 'DELETE',
     headers: { 'Content-type': 'application/json' }
   })

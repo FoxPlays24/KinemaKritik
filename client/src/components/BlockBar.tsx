@@ -12,7 +12,7 @@ const Block = ({film}: any) => {
 }
 
 export async function BlockBar() {
-  const films = await fetch(`${process.env.API_URL}/films`).then(res => res.json())
+  const films = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
 
   return (
     <div className="order-1 hidden lg:flex h-screen">

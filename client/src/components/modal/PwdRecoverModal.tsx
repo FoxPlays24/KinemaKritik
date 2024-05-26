@@ -2,15 +2,43 @@
 
 import { useState } from "react"
 import { Modal } from "./Modal"
-import { usePwdRecoverModal } from '@/hooks/useModal'
+import { usePwdRecoverModal, useRecoverCodeModal } from '@/hooks/useModal'
+import {compareLoginMail } from "@/utils/actions"
+import toast from "react-hot-toast"
 
 export function PwdRecoverModal() {
   const [isLoading, setIsLoading] = useState(false)
+  const [err,setErr] = useState(null)
 
   const pwdRecoverModal = usePwdRecoverModal()
+  const recoverCodeModal = useRecoverCodeModal()
 
-  function handleSubmit() {
+  async function handleSubmit(event: any) {
+    event.preventDefault()
 
+    setIsLoading(true)
+
+    const data = new FormData(event.currentTarget)
+    const inputs : any = Object.fromEntries(data)
+    
+    const compare = await compareLoginMail(inputs.loginMail)
+
+    if(compare && compare.type == 404 ) {
+      setErr(compare.message)
+      setIsLoading(false)
+      return
+    }
+    
+    await fetch("")
+
+    setErr(null)
+
+    toast.success("На вашу почту был отправлен код для сброса пароля!")
+    
+    recoverCodeModal.onOpen()
+    pwdRecoverModal.onClose()
+    
+    setIsLoading(false)
   }
 
   return (
@@ -18,7 +46,8 @@ export function PwdRecoverModal() {
       <p className="text-sm text-center">
         После нажатия кнопки "Отправить код" вам на почту, по которой зарегистрирован аккаунт, прийдет код для сброса пароля
       </p>
-      <input placeholder="Почта или логин" spellCheck="false" type="email" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
+      <input name="loginMail" placeholder="Почта или логин" spellCheck="false" type="text" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
+      <p className='text-red-600'>{err}</p>
     </Modal>
   )
 }

@@ -10,7 +10,7 @@ export async function ReviewPost({ review, isFilmPage = false, userLogin }: { re
     return (
       <div className="flex gap-1 items-center mb-2 select-none">
         <a href={`/user/${review.login}`} className="flex gap-2 items-center transition-colors hover:text-blue-400 border border-slate-300 hover:border-blue-400 px-2 py-1 rounded-2xl">
-          <Image src={bufferToBase64(review.profile_image)||"/placeholders/profile.png"} alt="Профиль" width={32} height={0} className="relative w-6 h-auto rounded-full" />
+          <Image src={bufferToBase64(review.profile_image)||"/placeholders/profile.png"} alt="Профиль" width={32} height={32} className="relative w-6 h-6 rounded-full" />
           <p>{review.username}</p>
         </a>
         {
@@ -26,14 +26,14 @@ export async function ReviewPost({ review, isFilmPage = false, userLogin }: { re
   }
 
   async function Footer() {
-    const votes = await fetch(`${process.env.API_URL}/review/votes?id=${review.id}`).then(res => res.json())
+    const votes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review/votes?id=${review.id}`).then(res => res.json())
     const voted = userLogin && review.id
-                  && await fetch(`${process.env.API_URL}/review/voted?id=${review.id}&user_login=${userLogin}`).then(res => res.json()) 
-    const replies = await fetch(`${process.env.API_URL}/review/replies?id=${review.id}`).then(res => res.json())
+                  && await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review/voted?id=${review.id}&user_login=${userLogin}`).then(res => res.json()) 
+    const replies = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review/replies?id=${review.id}`).then(res => res.json())
     
     return (
       <div className="flex gap-4 items-center">
-        <VotesFooter voted={voted} content={{reviewId: review.id}} votes={votes} />
+        <VotesFooter voted={voted} content={{reviewId: review.id}} votes={votes.rating} />
         <a href={`/review/${review.id}`} className="button bg-slate-200"><MessageCircle /> {replies}</a>
       </div>
     )
