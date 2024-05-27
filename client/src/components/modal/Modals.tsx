@@ -12,8 +12,11 @@ export function Modals() {
     <>
       <LoginModal />
       <RegisterModal />
+      
+      {/* Passwords */}
       <PwdRecoverModal />
       <RecoverCodeModal />
+
       <Suspense>
         <ImageModal />
       </Suspense>

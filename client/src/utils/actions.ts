@@ -48,11 +48,13 @@ export async function login(inputs: any) {
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(inputs)
   })
-  
-  const data = await result.json()
 
-  if (!result || !result.ok)
+  if (!result || !result.ok) {
+    const data = await result.json()
     return { "type": result.status, "message": data }
+  }
+
+  const data = await result.json()
 
   session.userLogin  = data.login
   session.isLoggedIn = true
@@ -63,20 +65,6 @@ export async function login(inputs: any) {
 export async function logout() {
   const session = await getSession()
   session.destroy()
-}
-
-export async function compareLoginMail(loginMail: string) {
-  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/compare`, {
-    method: 'POST',
-    headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify({ login_mail: loginMail })
-  })
-  const data = await result.json()
-
-  if (!result || !result.ok)
-    return { "type": result.status, "message": data }
-  
-  return data
 }
 
 //
@@ -231,4 +219,58 @@ export async function replyRemove(replyId: string) {
   }
 
   revalidatePath("/review/", "layout")
+}
+
+//
+//
+// Password
+//
+//
+
+export async function compareLoginMail(loginMail: string) {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/compare`, {
+    method: 'POST',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify({ login_mail: loginMail })
+  })
+  const data = await result.json()
+
+  if (!result || !result.ok)
+    return { "type": result.status, "message": data }
+  
+  return data
+}
+
+export async function compareCodes(code: string) {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/compare/code?code=${code}`)
+
+  if (!result || !result.ok) {
+    const data = await result.json()
+    return { "type": result.status, "message": data }
+  }
+}
+
+export async function pwdChange(newPassword: string, code: string) {
+  const session = await getSession()
+
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/password/change`, {
+    method: 'PATCH',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify({ 
+      new_password: newPassword,
+      code
+    })
+  })
+
+  if (!result || !result.ok) {
+    const data = await result.json()
+    return { "type": result.status, "message": data }
+  }
+
+  const data = await result.json()
+
+  session.userLogin  = data.user_login
+  session.isLoggedIn = true
+
+  await session.save()
 }

@@ -22,7 +22,7 @@ export function UserInfo({ user } : { user: IUserInfo }) {
         <h2 className="text-xl font-semibold truncate">{user.name}</h2>
         <p className="text-gray-3 text-sm line-clamp-2 leading-none">{user.status}</p>
       </div>
-      <Image src={user.picture} alt="User" width={64} height={64} className="rounded-2xl w-12 h-auto" />
+      <Image src={user.picture} alt="User" width={64} height={64} className="rounded-2xl w-12 h-12" />
     </button>
   )
 }

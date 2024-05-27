@@ -16,7 +16,7 @@ export interface IUserInfo {
 const Logo = () =>
   <Link href="/" className="flex items-center gap-4">
     <h1 className="text-sm font-semibold hidden lg:block">KИНЕМА</h1>
-    <Image src="/logo.svg" width={12} height={12} className="size-14" alt="Logo" priority={true} />
+    <Image src="/logo.svg" width={12} height={12} className="w-14 h-auto" alt="Logo" priority={true} />
     <h1 className="text-sm font-semibold hidden lg:block">КРИТИК</h1>
   </Link>
 

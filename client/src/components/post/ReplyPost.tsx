@@ -34,7 +34,7 @@ export function ReplyPost({ reply, isUserReview, isLoggedIn }: { reply: any, isU
     return (
       <div className="flex gap-1 items-center mb-2 select-none">
         <MessageCircle />
-        <Image src={bufferToBase64(reply.profile_image)||"/placeholders/profile.png"} alt="Профиль" width={16} height={16} className="relative size-10 rounded-full" />
+        <Image src={bufferToBase64(reply.profile_image)||"/placeholders/profile.png"} alt="Профиль" width={16} height={16} className="relative w-10 h-auto rounded-full" />
         <a href={`/user/${reply.login}`} className="flex gap-2 items-center transition-colors hover:text-blue-400 border border-slate-300 hover:border-blue-400 px-2 py-1 rounded-2xl">
           <p>{reply.username}</p>
         </a>

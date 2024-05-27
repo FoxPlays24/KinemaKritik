@@ -3,14 +3,15 @@ import 'dotenv/config'
 import express from 'express'
 
 import cors from 'cors'
-
-import authRoutes   from './routes/auth.js'
-import filmRoutes   from './routes/films.js'
-import userRoutes   from './routes/users.js'
-import reviewRoutes from './routes/reviews.js'
-import replyRoutes  from './routes/replies.js'
-import genreRoutes  from './routes/genres.js'
-import searchRoutes from './routes/search.js'
+  
+import authRoutes     from './routes/auth.js'
+import filmRoutes     from './routes/films.js'
+import userRoutes     from './routes/users.js'
+import reviewRoutes   from './routes/reviews.js'
+import replyRoutes    from './routes/replies.js'
+import genreRoutes    from './routes/genres.js'
+import searchRoutes   from './routes/search.js'
+import passwordRoutes from './routes/password.js'
 
 const app = express()
 
@@ -25,6 +26,7 @@ app.use(reviewRoutes)
 app.use(replyRoutes)
 app.use(genreRoutes)
 app.use(searchRoutes)
+app.use(passwordRoutes)
 
 const port = process.env.PORT
 app.listen(port, () => console.log(`Server is listening to port ${port}`))

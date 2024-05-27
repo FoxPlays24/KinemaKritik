@@ -1,6 +1,5 @@
 import { db } from '../db.js'
 import { hashPassword, comparePassword } from '../helpers/passwords.js'
-import nodemailer from 'nodemailer'
 
 export async function register(req, res) {
     const mail     = req.body.mail     && req.body.mail    .trim(),
@@ -66,57 +65,6 @@ export async function login(req, res) {
         const { password, ...others } = result[0]
         
         comparePasswords({inputPassword, password, others}, res)
-    })
-    .catch(err => res.status(500).json(err))
-}
-
-function generateRandomCode(length) {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    let result = ""
-    const randomArray = new Uint8Array(length)
-    crypto.getRandomValues(randomArray)
-    randomArray.forEach((number) => 
-      result += chars[number % chars.length])
-    return result;
-}
-
-function sendMail(code, mail) {
-    const transporter = nodemailer.createTransport({
-        port: 25,
-        host: 'localhost',
-        tls: {
-          rejectUnauthorized: false
-        }
-    })
-
-    const mailOptions = {
-        from: `"КинемаКритик" <no-reply@kinemakritik.ru>`,
-        to: mail,
-        subject: 'Сброс пароля на КинемаКритик',
-        text: `Ваш код для сброса пароля: ${code}\n ${process.env.CLIENT_URL}`
-    }
-
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error) console.log(error)
-        else console.log('Отправлено письмо: ' + info.response)
-    })
-}
-  
-
-export async function compareLoginPassword(req, res) {
-    const loginMail = req.body.login_mail && req.body.login_mail.trim()
-    
-    if (loginMail.length == 0)
-        return res.status(404).json('Пожалуйста, введите свой логин/почту')
-  
-    db.query(`SELECT login, mail FROM users WHERE login=? OR mail=?`, [loginMail,loginMail])
-    .then(([result]) => {
-        if (result.length == 0)
-            return res.status(404).json('Аккаунта с таким логином/почтой не существует')
-        const code = generateRandomCode(8)
-        db.query(`INSERT INTO password_recovery(code,user_login) VALUES(?)`, [[code, result[0].login]])
-        sendMail(code, result[0].mail)
-        return res.json(result[0])
     })
     .catch(err => res.status(500).json(err))
 }

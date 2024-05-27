@@ -1,25 +1,25 @@
 "use client"
 
-import Image from "next/image"
+// import Image from "next/image"
 import { Modal } from "./Modal"
 import { useLoginModal, useRegisterModal } from '@/hooks/useModal'
 import { useState } from "react"
 import { register } from "@/utils/actions"
 import toast from "react-hot-toast"
 
-interface RegisterButtonProps {
-  svg?: string;
-  name: string;
-}
+// interface RegisterButtonProps {
+//   svg?: string
+//   name: string
+// }
 
-function RegisterButton({svg, name}: RegisterButtonProps) {
-  return (
-    <button name={name} className="border border-slate-300 rounded-full px-4 py-2 flex items-center gap-4 transition-colors hover:bg-slate-300">
-      <Image src={svg || ""} alt={name} width={24} height={24} />
-      <p className="mx-auto text-center px-2 -translate-x-4">Зарегистироваться с {name}</p>
-    </button>
-  )
-}
+// function RegisterButton({svg, name}: RegisterButtonProps) {
+//   return (
+//     <button name={name} className="border border-slate-300 rounded-full px-4 py-2 flex items-center gap-4 transition-colors hover:bg-slate-300">
+//       <Image src={svg || ""} alt={name} width={24} height={24} />
+//       <p className="mx-auto text-center px-2 -translate-x-4">Зарегистироваться с {name}</p>
+//     </button>
+//   )
+// }
 
 export function RegisterModal() {
   const [isLoading, setIsLoading] = useState(false)

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Modal } from "./Modal"
 import { usePwdRecoverModal, useRecoverCodeModal } from '@/hooks/useModal'
-import {compareLoginMail } from "@/utils/actions"
+import { compareLoginMail } from "@/utils/actions"
 import toast from "react-hot-toast"
 
 export function PwdRecoverModal() {
