@@ -82,19 +82,18 @@ function generateRandomCode(length) {
 
 function sendMail(code, mail) {
     const transporter = nodemailer.createTransport({
-        service: 'postfix',
-        host: 'localhost',
-        secure: false,
         port: 25,
-        auth: { user: process.env.LINUX_USER, pass: process.env.LINUX_PASSWORD },
-        tls: { rejectUnauthorized: false }
+        host: 'localhost',
+        tls: {
+          rejectUnauthorized: false
+        }
     })
 
     const mailOptions = {
-        from: process.env.LINUX_USER,
+        from: `"КинемаКритик" <no-reply@kinemakritik.ru>`,
         to: mail,
         subject: 'Сброс пароля на КинемаКритик',
-        text: "Ваш код для сброса пароля: " + code
+        text: `Ваш код для сброса пароля: ${code}\n ${process.env.CLIENT_URL}`
     }
 
     transporter.sendMail(mailOptions, function(error, info) {

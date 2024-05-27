@@ -8,7 +8,6 @@ DB_USER     = "user"
 DB_PASSWORD = "password"
 DB_DATABASE = "database"
 
-# Linux
+# Mail info
 
-LINUX_USER     = "no-reply@site.domain"
-LINUX_PASSWORD = "password"
+SITE_URL    = "http(s)://site.domain"
