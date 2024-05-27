@@ -22,8 +22,8 @@ function Gallery({film, link} : {film: any, link : string}) {
       {
         film.trailer_ytId &&
         <a className="relative flex items-center justify-center group" href={"https://youtu.be/"+film.trailer_ytId}>
-          <PlayCircle className="absolute z-10 text-gray-300 size-16 transition group-hover:scale-110 group-hover:text-white" />
-          <Image priority className="rounded-2xl gallery-image aspect-square size-64" src={`http://i3.ytimg.com/vi/${film.trailer_ytId}/maxresdefault.jpg`} width={480} height={480} alt="Трейлер" />
+          <PlayCircle className="absolute z-10 text-gray-300 w-16 h-auto transition group-hover:scale-110 group-hover:text-white" />
+          <Image priority className="rounded-2xl gallery-image aspect-square w-64 h-auto" src={`http://i3.ytimg.com/vi/${film.trailer_ytId}/maxresdefault.jpg`} width={480} height={480} alt="Трейлер" />
         </a>
       }
       

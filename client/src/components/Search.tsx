@@ -40,14 +40,14 @@ export function SearchInput() {
   }, [value])
 
   return (
-    <div className="w-[40%] flex justify-center">
+    <div className="lg:w-[40%] flex justify-center">
       <div className="flex items-center w-full">
         <div className="absolute pl-2"><Search /></div>
         <input autoComplete="off" name="search" placeholder="Поиск..." onChange={(e) => setText(e.target.value)} spellCheck="false" className="bg-slate-200 text-lg focus:outline-none focus:ring-2 ring-slate-400 p-2 rounded-2xl w-full ps-10" />
       </div>
       {
         value &&
-        <div className="absolute w-[38%] translate-y-14">
+        <div className="absolute lg:w-[38%] translate-y-14">
           <div className="bg-slate-200 flex flex-col slide-down p-4 rounded-2xl border-2 border-slate-400 divide-y-2 divide-slate-300">
             {
               result.slice(0, 5).map((item: any) => <SearchItem key={item.link} type={item.type} name={item.title} link={item.link} />)

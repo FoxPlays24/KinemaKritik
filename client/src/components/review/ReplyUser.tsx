@@ -62,7 +62,7 @@ export function ReplyUser({ reviewId }: { reviewId: string }) {
   return (
     <form onSubmit={handleSubmit}
           className="slide-down border border-slate-300 rounded-2xl p-4 transition-colors hover:border-slate-500">
-      { parentReply && <ReplyAnswer /> }
+      { replyId && parentReply?.id && <ReplyAnswer /> }
       <div className="flex flex-col gap-4 mb-4">
         <ReactTextareaAutosize name="content" value={content} onChange={e => setContent(e.target.value)} maxLength={800} 
           placeholder="Содержание" className="transition-transform whitespace-pre-line leading-relaxed focus:outline-none resize-none" />

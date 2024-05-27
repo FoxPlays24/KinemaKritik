@@ -81,12 +81,12 @@ export function UserPageInfo({ user, userLogin, isUser }: { user: any, userLogin
             {
               isEditing ? 
               <>
-                <button disabled={isLoading} onClick={handleSave} className="ml-auto flex items-center button bg-slate-200 text-sm px-6"><Save /> Сохранить</button>
+                <button disabled={isLoading} onClick={handleSave} className="flex items-center button bg-slate-200 text-sm lg:px-6"><Save /><p className="hidden lg:block">Сохранить</p></button>
                 <button disabled={isLoading} onClick={() => window.location.reload()}><X className="button bg-slate-200 size-10" /></button>
               </>
               :
               <>
-                <button onClick={() => setIsEditing(true)} className="button bg-slate-200 text-sm"><Edit /> Редактировать</button> 
+                <button onClick={() => setIsEditing(true)} className="button bg-slate-200 text-sm"><Edit /><p className="hidden lg:block">Редактировать</p></button> 
                 <button onClick={handleLogout}><DoorOpen className="button bg-slate-200 size-10" /></button>
               </>
             }

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Modal } from "./Modal"
-import { useLoginModal, usePwdRecoverModal, useRegisterModal } from '@/hooks/useModal'
+import { useLoginModal, useRegisterModal } from '@/hooks/useModal'
 import { useState } from "react"
 import { register } from "@/utils/actions"
 import toast from "react-hot-toast"
@@ -27,17 +27,11 @@ export function RegisterModal() {
   
   const registerModal   = useRegisterModal()
   const loginModal      = useLoginModal()
-  // const pwdRecoverModal = usePwdRecoverModal()
 
   const onToggle = () => {
     registerModal.onClose()
     loginModal.onOpen()
   }
-
-  // const onRecover = () => {
-  //   registerModal.onClose()
-  //   pwdRecoverModal.onOpen()
-  // }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -82,7 +76,6 @@ export function RegisterModal() {
       <input name='password' placeholder="Пароль" spellCheck="false" type="password" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
       <div>
       <p className='text-red-600'>{err}</p>
-      {/* <span onClick={onRecover} className="link cursor-pointer">Забыли пароль?</span> */}
         <p>Уже есть аккаунт? <span onClick={onToggle} className="link cursor-pointer">Войдите в него!</span></p>
       </div>
     </Modal>

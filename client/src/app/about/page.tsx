@@ -16,7 +16,7 @@ export default function Privacy() {
         <div className="flex justify-center">
           <a href="https://github.com/FoxPlays24/KinemaKritik" className="button border-2 flex gap-2">Проект на GitHub <Github /></a>
         </div>
-        <div className="flex justify-center mt-48">
+        <div className="flex justify-center mt-20">
           <Image src="/pages/about.png" alt="About" width={200} height={200} />
         </div>
       </div>

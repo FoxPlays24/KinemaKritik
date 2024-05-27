@@ -11,7 +11,7 @@ export function MediaModal({isOpen, handleClose, children}: MediaModalProps) {
 
   return (
     <div className="fixed inset-0 bg-slate-900/30 flex justify-center items-center z-50">
-      <div className="w-[60%] group">
+      <div className="w-[90%] lg:w-[60%] group">
         <button className="fixed bg-black text-white transition lg:opacity-0 group-hover:opacity-80 hover:scale-110 active:scale-95 p-2 rounded-2xl m-4 z-10" onClick={handleClose}><X /></button>
         {children}
       </div>

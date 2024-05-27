@@ -8,7 +8,7 @@ export function GalleryImage({image} : {image : string}) {
 
   return (
     <button onClick={() => router.push(`?img=${image.split("/")[4]}`, { scroll: false })} className="group">
-      <Image src={image} width={320} height={320} alt="Image" className="gallery-image size-32 m-1 aspect-square" />
+      <Image src={image} width={320} height={320} alt="Image" className="gallery-image w-32 h-auto m-1 aspect-square" />
     </button>
   )
 }

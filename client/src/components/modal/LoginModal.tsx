@@ -49,7 +49,7 @@ export function LoginModal() {
 
     const logining = await login(inputs)
 
-    if(logining && logining.type == 404 ) {
+    if(logining && (logining.type == 404 || logining.type == 500) ) {
       setErr(logining.message)
       setIsLoading(false)
       return
@@ -62,7 +62,7 @@ export function LoginModal() {
     
     setIsLoading(false)
     
-    window.location.reload()
+    // window.location.reload()
   }
 
   return (
