@@ -25,6 +25,7 @@ export async function CategoriesBar() {
           <b>КинемаКритик</b>
           <p>Интернет-ресурс для рецензий на фильмы и сериалы, 2024</p>
           <p>Хнытиков Алексей</p>
+          <p>Связь с поддержкой: <a href="mailto:support@kinemakritik.ru&subject=Вопрос на КинемаКритик" className="link">support@kinemakritik.ru</a></p>
         </div>
       </div>
     </div>

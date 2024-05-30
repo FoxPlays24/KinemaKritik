@@ -15,7 +15,7 @@ export async function BlockBar() {
   const films = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
 
   return (
-    <div className="order-1 hidden lg:flex h-screen">
+    <div className="order-1 hidden lg:flex">
       <div className="fixed flex flex-col items-center bg-white h-full border border-gray-2 divide-gray-2 shadow-lg px-4 pt-8 select-none">
         <div className="flex flex-col items-center mb-6 mt-20">
           <Newspaper />

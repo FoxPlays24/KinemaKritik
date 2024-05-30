@@ -1,8 +1,6 @@
 import { db } from '../db.js'
-import { hashPassword, comparePassword } from '../helpers/passwords.js'
+import { hashPassword } from '../helpers/passwords.js'
 import nodemailer from 'nodemailer'
-
-
 
 function generateRandomCode(length) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -17,14 +15,11 @@ function generateRandomCode(length) {
 function sendMail(code, mail) {
     const transporter = nodemailer.createTransport({
         port: 25,
-        host: 'localhost',
-        tls: {
-          rejectUnauthorized: false
-        }
+        host: 'localhost'
     })
 
     const mailOptions = {
-        from: `"КинемаКритик" <no-reply@kinemakritik.ru>`,
+        from: `"КинемаКритик" <no-reply@${process.env.MAIL_ADDRESS}>`,
         to: mail,
         subject: 'Сброс пароля на КинемаКритик',
         text: `Ваш код для сброса пароля: ${code}\n${process.env.CLIENT_URL}`
@@ -48,7 +43,6 @@ export async function compareLoginPassword(req, res) {
         if (result.length == 0)
             return res.status(404).json('Аккаунта с таким логином/почтой не существует')
         const code = generateRandomCode(8)
-        console.log(code)
         db.query(`INSERT INTO password_recovery(code, user_login) VALUES(?)`, [[code, result[0].login]])
         .then(() => {
             sendMail(code, result[0].mail)
@@ -94,7 +88,7 @@ export async function changePassword(req, res) {
     
     db.query(`SELECT user_login FROM password_recovery WHERE code=?`, [code])
     .then(([result]) => {
-        db.query(`UPDATE users SET password='${hashedPassword}' WHERE login='${result[0].login}'`)
+        db.query(`UPDATE users SET password=? WHERE login=?`, [hashedPassword, result[0].user_login])
         .then(() => {
             db.query(`DELETE FROM password_recovery WHERE code=?`, [code])
             .then(res.status(200).json(result[0]))

@@ -44,7 +44,7 @@ export function PwdRecoverModal() {
   return (
     <Modal isLoading={isLoading} title="Восстановление пароля" buttonName="Отправить код" isOpen={pwdRecoverModal.isOpen} handleClose={pwdRecoverModal.onClose} handleSubmit={handleSubmit}>
       <p className="text-sm text-center">
-        После нажатия кнопки "Отправить код" вам на почту, по которой зарегистрирован аккаунт, прийдет код для сброса пароля
+        После нажатия кнопки "Отправить код" на вашу электронную почту будет отправлен код для восстановления пароля
       </p>
       <input name="loginMail" placeholder="Почта или логин" spellCheck="false" type="text" className="bg-slate-200 focus:outline-none focus:ring-2 ring-slate-400 px-3 py-2 rounded-2xl w-full" />
       <p className='text-red-600'>{err}</p>
