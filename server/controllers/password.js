@@ -15,7 +15,11 @@ function generateRandomCode(length) {
 function sendMail(code, mail) {
     const transporter = nodemailer.createTransport({
         port: 25,
-        host: 'localhost'
+        host: 'localhost',
+        secure: false,
+        tls: {
+            rejectUnauthorized: false
+        }
     })
 
     const mailOptions = {
