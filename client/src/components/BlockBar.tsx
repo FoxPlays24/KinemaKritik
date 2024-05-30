@@ -16,12 +16,12 @@ export async function BlockBar() {
 
   return (
     <div className="order-1 hidden lg:flex">
-      <div className="fixed flex flex-col items-center bg-white h-full border border-gray-2 divide-gray-2 shadow-lg px-4 pt-8 select-none">
+      <div className="fixed flex flex-col items-center bg-white h-screen border border-gray-2 divide-gray-2 shadow-lg px-4 pt-8 select-none">
         <div className="flex flex-col items-center mb-6 mt-20">
           <Newspaper />
           <h2 className="text-xl"> Актуальное</h2>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col h-screen overflow-y-auto scrollbar-thin">
           { films?.map((film: any) => <Block key={film.id} film={film} />) }
         </div>
       </div>
