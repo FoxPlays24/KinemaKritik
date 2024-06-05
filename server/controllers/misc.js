@@ -7,7 +7,7 @@ export const getSearch = (req, res) => {
         return res.status(500).send('Пожалуйста, введите запрос')
 
     // Films
-    db.query(`SELECT 'film' type, link, title FROM films WHERE CONCAT(title,original_title) LIKE '%${query}%'`)
+    db.query(`SELECT 'film' type, link, title FROM films WHERE CONCAT(title,IFNULL(original_title,"")) LIKE '%${query}%'`)
     .then(([films]) => {
         // Users
         db.query(`SELECT 'user' type, login link, IFNULL(username,login) title FROM users JOIN profiles ON user_id=users.id WHERE CONCAT(username,login) LIKE '%${query}%'`)
