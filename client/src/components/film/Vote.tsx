@@ -1,6 +1,6 @@
 import { VotesFooter } from "../VotesFooter"
 
-export async function Vote({ filmId, voted }: { filmId: string, voted: number }) {
+export async function Vote({ filmId, voted }: { filmId: number, voted: number }) {
   const votes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/votes?id=${filmId}`).then(res => res.json())
   
   return (

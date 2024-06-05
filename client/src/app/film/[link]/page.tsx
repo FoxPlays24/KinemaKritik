@@ -124,10 +124,10 @@ export async function generateStaticParams() {
 
 export default async function FilmPage({ params }: any) {
   const link : string = params.link
-  let film = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films?link=${link}`).then(res => res.json())
+  const filmQuery : [IFilm] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films?link=${link}`).then(res => res.json())
   
-  if (!film[0]) notFound()
-  film = film[0]
+  if (!filmQuery[0]) notFound()
+  const film = filmQuery[0]
 
   const session = await getSession()
   const voted = session.userLogin
@@ -141,7 +141,7 @@ export default async function FilmPage({ params }: any) {
       <Header hasBackButton title={`${film.film_type} "${film.title}"`} icon={<Film />}/>
       <div className="flex flex-col p-4 gap-4 divide-slate-300">
         <FilmHeader film={film} link={link} />
-        <FilmInfo film={film} genres={genres} link={link} />
+        <FilmInfo film={film} genres={genres} />
         <Gallery film={film} link={link} />
         <Vote voted={voted} filmId={film.id} />
         <Reviews isVoted={voted} filmLink={link} />

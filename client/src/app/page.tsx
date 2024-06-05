@@ -7,7 +7,7 @@ import { Home } from "lucide-react"
 
 export default async function MainPage() {
   const session = await getSession()
-  const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts?offset=0`, { cache: 'no-store' }).then(res => res.json())
+  const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, { cache: 'no-store' }).then(res => res.json())
   
   return (
     <>
