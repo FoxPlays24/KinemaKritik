@@ -184,7 +184,7 @@ export async function editProfile({ userLogin, profileImage, coverImage, usernam
 //
 //
 
-export async function reply({ reviewId, parentId, content }: { reviewId: string, parentId?: string, content: string }) {
+export async function reply({ reviewId, parentId, content }: { reviewId: number, parentId?: string, content: string }) {
   const session = await getSession()
 
   const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reply`, {
@@ -207,7 +207,7 @@ export async function reply({ reviewId, parentId, content }: { reviewId: string,
   revalidatePath("/review/", "layout")
 }
 
-export async function replyRemove(replyId: string) {
+export async function replyRemove(replyId: number) {
   const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reply?reply_id=${replyId}`, {
     method: 'DELETE',
     headers: { 'Content-type': 'application/json' }

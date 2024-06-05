@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import ReactTextareaAutosize from "react-textarea-autosize"
 
-export function ReplyUser({ reviewId }: { reviewId: string }) {
+export function ReplyUser({ reviewId }: { reviewId: number }) {
   const [content, setContent]     = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [parentReply, setParentReply] : any = useState([])

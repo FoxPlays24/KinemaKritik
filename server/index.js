@@ -10,7 +10,7 @@ import userRoutes     from './routes/users.js'
 import reviewRoutes   from './routes/reviews.js'
 import replyRoutes    from './routes/replies.js'
 import genreRoutes    from './routes/genres.js'
-import searchRoutes   from './routes/search.js'
+import miscRoutes     from './routes/misc.js'
 import passwordRoutes from './routes/password.js'
 
 const app = express()
@@ -25,7 +25,7 @@ app.use(userRoutes)
 app.use(reviewRoutes)
 app.use(replyRoutes)
 app.use(genreRoutes)
-app.use(searchRoutes)
+app.use(miscRoutes)
 app.use(passwordRoutes)
 
 const port = process.env.PORT

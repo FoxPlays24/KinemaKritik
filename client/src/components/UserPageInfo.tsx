@@ -18,9 +18,9 @@ export function UserPageInfo({ user, userLogin, isUser }: { user: any, userLogin
   const [isLoading, setIsLoading] = useState(false)
 
   const [profileImage, setProfileImage] = useState("")
-  const [coverImage, setCoverImage] = useState("")
-  const [username, setUsername] = useState("")
-  const [status, setStatus] = useState("")
+  const [coverImage, setCoverImage]     = useState("")
+  const [username, setUsername]         = useState("")
+  const [status, setStatus]             = useState("")
 
   useEffect(() => {
     setProfileImage(user.profile_image)

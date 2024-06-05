@@ -6,6 +6,7 @@ import ReactTextareaAutosize from "react-textarea-autosize"
 import { useState } from "react"
 import { review, reviewRemove } from "@/utils/actions"
 import toast from "react-hot-toast"
+import { IReview } from "@/utils/types"
 
 function NewReview({ filmLink, id, hidden, disabled, isVoted, userReview }: { filmLink: string, id: string, hidden: boolean, disabled: boolean, isVoted: number, userReview: any }) {
   if(!userReview) return
@@ -88,7 +89,7 @@ function NewReview({ filmLink, id, hidden, disabled, isVoted, userReview }: { fi
   )
 }
 
-export function ReviewUser({ filmLink, isLoggedIn, isVoted, review }: { filmLink: string, isLoggedIn: boolean, isVoted: number, review: any }) {
+export function ReviewUser({ filmLink, isLoggedIn, isVoted, review }: { filmLink: string, isLoggedIn: boolean, isVoted: number, review: [IReview] }) {
   const loginModal = useLoginModal()
 
   const [isHidden, setIsHidden] = useState(true)

@@ -4,16 +4,17 @@ import { Replies } from "@/components/review/Replies"
 import { ReplyUser } from "@/components/review/ReplyUser"
 import { getSession } from "@/utils/actions"
 import { bufferToBase64 } from "@/utils/strings"
+import { IReview } from "@/utils/types"
 import { Heart, HeartCrack, NotebookPen } from "lucide-react"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
 export default async function ReviewPage({ params }: any) {
   const reviewId = params.id
-  let review = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?id=${reviewId}`, { cache: 'no-store' }).then(res => res.json())
+  const reviewQuery : [IReview] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?id=${reviewId}`, { cache: 'no-store' }).then(res => res.json())
   
-  if (!review[0]) notFound()
-  review = review[0]
+  if (!reviewQuery[0]) notFound()
+  const review : IReview = reviewQuery[0]
 
   const votes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review/votes?id=${review.id}`).then(res => res.json())
   const session = await getSession()

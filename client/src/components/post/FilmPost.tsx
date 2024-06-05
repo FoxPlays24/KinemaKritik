@@ -4,8 +4,9 @@ import Image from "next/image"
 import { isImageFound } from "@/utils/strings"
 import { VotesFooter } from "../VotesFooter"
 import { getSession } from "@/utils/actions"
+import { IFilm } from "@/utils/types"
 
-export async function FilmPost({ film }: any) {
+export async function FilmPost({ film }: { film: IFilm }) {
   const votes    = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/votes?id=${film.id}`).then(res => res.json())
   const reviews  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/film/reviews?id=${film.id}`).then(res => res.json())
   const hasCover = await isImageFound(`/films/banners/${film.link}.png`)

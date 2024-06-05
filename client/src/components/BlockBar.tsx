@@ -1,7 +1,8 @@
-import { Loader, Newspaper } from "lucide-react"
+import { IFilm } from "@/utils/types"
+import { Newspaper } from "lucide-react"
 import Image from "next/image"
 
-const Block = ({film}: any) => {
+const Block = ({ film }: { film: IFilm }) => {
   const filmYear = new Date(film.release_date).getFullYear()
 
   return (
@@ -12,7 +13,7 @@ const Block = ({film}: any) => {
 }
 
 export async function BlockBar() {
-  const films = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
+  const films : [IFilm] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
 
   return (
     <div className="order-1 hidden lg:flex">
@@ -22,7 +23,7 @@ export async function BlockBar() {
           <h2 className="text-xl"> Актуальное</h2>
         </div>
         <div className="flex flex-col h-screen overflow-y-auto scrollbar-thin">
-          { films?.map((film: any) => <Block key={film.id} film={film} />) }
+          { films?.map((film: IFilm) => <Block key={film.id} film={film} />) }
         </div>
       </div>
     </div>

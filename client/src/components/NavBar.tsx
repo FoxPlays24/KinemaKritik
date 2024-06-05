@@ -37,7 +37,7 @@ export async function NavBar() {
   }
 
   return (
-    <nav className="fixed w-full z-20 bg-white border border-slate-400 rounded-b-2xl px-12 py-2 top-0 start-0">
+    <nav className="fixed w-full z-20 bg-white border border-slate-400 rounded-b-2xl px-6 lg:px-12 py-2 top-0 start-0">
       <div className="flex mx-auto justify-between items-center gap-8">
         <Logo />
         <SearchInput />

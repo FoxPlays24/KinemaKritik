@@ -4,8 +4,9 @@ import Image from "next/image"
 import { bufferToBase64 } from "@/utils/strings"
 import { VotesFooter } from "../VotesFooter"
 import moment from "moment"
+import { IReview } from "@/utils/types"
 
-export async function ReviewPost({ review, isFilmPage = false, userLogin }: { review: any, isFilmPage?: boolean, userLogin?: string }) {
+export async function ReviewPost({ review, isFilmPage = false, userLogin }: { review: IReview, isFilmPage?: boolean, userLogin?: string }) {
   function Header() {
     return (
       <div className="flex gap-1 items-center mb-2 select-none">

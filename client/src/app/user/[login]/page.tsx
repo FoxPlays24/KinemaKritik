@@ -5,6 +5,7 @@ import { getSession } from "@/utils/actions"
 import { declOfNum } from "@/utils/strings"
 import { User } from "lucide-react"
 import { notFound } from "next/navigation"
+import { IReview } from "@/utils/types"
 
 export default async function UserPage({ params }: any) {
   const login = params.login
@@ -14,7 +15,7 @@ export default async function UserPage({ params }: any) {
   user = user[0]
 
   const session = await getSession()
-  const reviews = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?user_login=${login}`).then(res => res.json())
+  const reviews : [IReview] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews?user_login=${login}`).then(res => res.json())
 
   return (
     <>
@@ -22,7 +23,7 @@ export default async function UserPage({ params }: any) {
       <div className="flex flex-col p-4 gap-6">
         <UserPageInfo user={user} userLogin={login} isUser={session.userLogin === login} />
         {
-          reviews.map((review: any) => 
+          reviews.map((review: IReview) => 
             <ReviewPost key={review.id} review={review} userLogin={session.userLogin} />)
         }
       </div>

@@ -9,8 +9,9 @@ import { GalleryImage } from "@/components/GalleryImage"
 import { Reviews } from "@/components/film/Reviews"
 import { Vote } from "@/components/film/Vote"
 import { getSession } from "@/utils/actions"
+import { IFilm, IGenre } from "@/utils/types"
 
-function Gallery({film, link} : {film: any, link : string}) {
+function Gallery({film, link} : {film: IFilm, link : string}) {
   const dir = path.join(process.cwd(), "/public/films/shots/", link)
 
   if (!fs.existsSync(dir)) return
@@ -38,18 +39,18 @@ function Gallery({film, link} : {film: any, link : string}) {
 }
 
 interface InfoItemProps {
-  condition?: boolean
-  title:      string
-  info:       string
+  date?: Date
+  title: string
+  info:  string
 }
 
-function InfoItem({condition, title, info}: InfoItemProps) {
+function InfoItem({date, title, info}: InfoItemProps) {
   return (
     <>
     {
-      condition !== null &&
+      date !== null &&
       (
-        condition ?
+        date ?
         <div className="text-slate-400">
           <span>{">"} {title}</span>
           <span className="absolute right-0">{info}</span>
@@ -65,20 +66,20 @@ function InfoItem({condition, title, info}: InfoItemProps) {
   )
 }
 
-function FilmInfo({film, genres}: any) {
+function FilmInfo({ film, genres }: { film: IFilm, genres: any }) {
   const releaseDate = new Date(film.release_date).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
   const streamsDate = new Date(film.release_date_streams).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
-  const russiaDate = new Date(film.release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
+  const russiaDate  = new Date(film.release_date_russia).toLocaleString("ru", { year: 'numeric', month: 'long', day:'numeric' })
 
   return (
     <div className='flex flex-col items-center gap-4'>
       <div className='flex flex-col w-[100%] relative'>
         <InfoItem title="Дата выхода" info={releaseDate} />
-        <InfoItem condition={film.release_date_streams} title="стриминг-сервисы" info={streamsDate} />
-        <InfoItem condition={film.release_date_russia} title="в России" info={russiaDate} />
+        <InfoItem date={film.release_date_streams} title="стриминг-сервисы" info={streamsDate} />
+        <InfoItem date={film.release_date_russia} title="в России" info={russiaDate} />
         
         <InfoItem title="Жанр" info={
-          genres.map((genre: any, index: number) =>
+          genres.map((genre: IGenre, index: number) =>
             <span key={genre.id}>
               <a href={`/genre/${genre.id}`} className='link'>{genre.name}</a>
               {index !== genres.length-1 && ' / '}
@@ -93,7 +94,7 @@ function FilmInfo({film, genres}: any) {
   )
 }
 
-async function FilmHeader({ film, link }: any) {
+async function FilmHeader({ film, link }: { film: IFilm, link: string }) {
   const hasCover = await isImageFound(`/films/banners/${link}.png`)
   const filmYear = new Date(film.release_date).getFullYear()
 
@@ -114,9 +115,9 @@ async function FilmHeader({ film, link }: any) {
 }
 
 export async function generateStaticParams() {
-  const films = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
+  const films : [IFilm] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/films`).then(res => res.json())
 
-  return films.map((film: any) => ({ 
+  return films.map((film: IFilm) => ({ 
     link: film.link 
   }))
 }

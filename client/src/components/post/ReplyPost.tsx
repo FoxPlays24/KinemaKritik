@@ -8,8 +8,9 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import { replyRemove } from "@/utils/actions"
 import { useRouter } from "next/navigation"
+import { IReply } from "@/utils/types"
 
-export function ReplyPost({ reply, isUserReview, isLoggedIn }: { reply: any, isUserReview: boolean, isLoggedIn: boolean }) {
+export function ReplyPost({ reply, isUserReview, isLoggedIn }: { reply: IReply, isUserReview: boolean, isLoggedIn: boolean }) {
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
