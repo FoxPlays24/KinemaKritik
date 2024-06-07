@@ -172,7 +172,7 @@ export async function editProfile({ userLogin, profileImage, coverImage, usernam
 
   if (!result.ok) {
     const data = await result.json()
-    console.error(data)
+    throw new Error(data)
   }
 
   revalidatePath("/user/", "layout")

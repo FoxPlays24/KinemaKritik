@@ -36,11 +36,15 @@ export function UserPageInfo({ user, userLogin, isUser }: { user: any, userLogin
     if(isUsernameEmpty)
       setUsername(userLogin)
 
-    await editProfile({ userLogin, profileImage, coverImage, username: (isUsernameEmpty ? userLogin : username), status })
-
-    toast.success("Изменения успешно внесены!")
-    setIsLoading(false)
-    setIsEditing(false)
+    try {
+      await editProfile({ userLogin, profileImage, coverImage, username: (isUsernameEmpty ? userLogin : username), status })
+      toast.success("Изменения успешно внесены!")
+      setIsEditing(false)
+    } catch(err) {
+      toast.error("Размер изображений профиля превышает 3мб")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
